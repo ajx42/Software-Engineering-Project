@@ -1,2 +1,4 @@
 # Software-Engineering-Project
-bla
+
+Leave Management System by:
+Aditya, Kailas, Nitish and Ganesh
