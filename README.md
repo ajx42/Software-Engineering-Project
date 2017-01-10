@@ -1,4 +1,3 @@
-# Software-Engineering-Project
+## CS[258]
 
-Leave Management System by:
-Aditya, Kailas, Nitish and Ganesh
+# Leave Management System
