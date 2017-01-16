@@ -18,7 +18,12 @@ View past recommendations [exclusive to recommender]<br>
 View past approvals [exclusive to approver]<br>
 
 #### Aditya:
-Apply Leave [form] <br>
+Apply Leave : CL[form] <br>
+Apply Leave : Other[form] <br>
+Open Application (Recommending Authority, CL) <br>
+Open Application (Recommending Authority, Other) <br>
+Open Application (Approving Authority, CL) <br>
+Open Application (Approving Authority, Other) <br>
 View my record <br>
 Balance record <br>
 Account Settings
