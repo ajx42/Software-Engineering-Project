@@ -1,0 +1,122 @@
+<html>
+		<body>
+			<h2> Leave Application (Other than CL) Awaiting Recommendation</h2>			
+			<form action="userhome.html">
+				<table style="width:70%">
+	  				<tr>
+					    <td>1. Name of Employee</td>
+					    <td><input type="text" name="Name" style="width: 200px;" disabled value = "Pat"></td> 
+					</tr>
+					<tr>
+					    <td>2. Designation:</td>
+	  					<td><input type="text" name="Designation" style="width: 200px;" disabled value = "Engineer"></td>
+					</tr>
+					<tr>
+					    <td>3. Department: </td>
+					    <td>
+							<select style ="width: 200px;" disabled>
+								<option value = "Other"> Other: Please specify </option>
+								<option value = "d1"> Dep1 </option>
+								<option value = "d2"> Dep2 </option>
+								<option value = "d3"> Dep3 </option>
+								<option value = "d4"> Dep4 </option>
+							</select>
+						</td>
+	  					<td><input type="text" name="Department" style="width: 200px;" disabled value = "CSE"></td>
+					</tr>
+					
+					<tr>
+					    <td>4. Nature of Leave:<br>(EL/HPL/Any other kind of Leave) </td>
+	  					<td><input type="text" name="natureofleave" style="width: 200px;" disabled value = "EL"></td>
+					</tr>
+					<tr>
+						<td>Number of Leave Days:</td>
+	  					<td><input type="text" name="numberofleave" style="width: 200px;" disabled value = "5"></td>
+	  				</tr>
+					<tr>
+					    <td>5. Date of Leave:</td>
+					</tr>
+					<tr>
+						<td>From</td>
+	  					<td><input type="text" name="fromdate" style="width: 200px;" disabled value = "26/1/17"></td>
+	  				</tr>
+	  				<tr>
+	  					<td>To</td>
+	  					<td><input type="text" name="todate" style="width: 200px;" disabled value = "28/1/17"></td>
+	  				</tr>
+	  				<tr>
+	  					<td>6. Prefix/Suffix/Holidays if any</td>
+	  				</tr>
+	  				<tr>
+	  					<td>Prefix:</td>
+	  					<td><input type="text" name="todate" style="width: 200px;" disabled value = "0"></td>
+					</tr>
+					<tr>
+						<td>Suffix</td>
+						<td><input type="text" name="todate" style="width: 200px;" disabled value = "0"></td>
+					</tr>
+					<tr>
+						<td>7. Proposes to avail for LTC </td>
+						<td>
+							<select style ="width: 200px;" disabled value = "Pat">
+								<option value = "No"> No </option>
+								<option value = "Yes">Yes</option>
+							</select>
+						</td>
+					</tr>  
+					<tr>
+					    <td>8. Reason for taking leave and <br>Address while on leave with contact no.</td>
+	  					<td><input type="text" name="contact" style="width: 200px;" disabled value = "tour"></td>
+					</tr>
+					<tr>
+					    <td>Date</td>
+	  					<td><input type="text" name="date" style="width: 200px;" disabled value = "5/1/17"></td>
+					</tr>	
+				</table>
+				<br>
+				<br>
+				<h2> For Recommending Authority Only </h2>
+				<table style="width:50%">
+					<tr>
+						<td> 
+							<input type="radio"  name="status" value="rec" checked disabled> Recommended<br>
+						</td>
+						<td>
+  							<input type="radio" name="status" value="notrec" disabled> Not Recommended<br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Reason, if not recommended
+						</td>
+						<td>
+							<input type="text" name="reason" style="width: 250px;" disabled>
+						</td>
+					</tr>
+					
+				</table>
+				<h2> For Approving Authority Only </h2>
+				<table style="width:50%">
+					<tr>
+						<td> 
+							<input type="radio" name="status" value="rec" checked> Approved<br>
+						</td>
+						<td>
+  							<input type="radio" name="status" value="notrec"> Not Approved<br>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Reason, if not approved
+						</td>
+						<td>
+							<input type="text" name="reason" style="width: 250px;">
+						</td>
+					</tr>
+					<tr>
+						<td><input type="submit" value="Submit and forward to Admin" style="width: 250px;"></td>
+					</tr>
+				</table>
+			</form>
+		</body>
+	</html>
