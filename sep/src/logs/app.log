@@ -1,0 +1,4 @@
+[2017-02-20 20:27:16] my_logger.INFO: Ticket list [] []
+[2017-02-20 20:31:11] my_logger.INFO: asd [] []
+[2017-02-22 01:12:40] my_logger.ERROR: mysqli error [] []
+[2017-02-22 01:14:26] my_logger.ERROR: mysqli error [] []
