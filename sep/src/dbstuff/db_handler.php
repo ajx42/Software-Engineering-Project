@@ -30,20 +30,19 @@ class Dbhandler{
 		$department = $res['department'];
 		$period_from = $res['period_from'];
 		$period_to = $res['period_to'];
-		/////
+		
 		$prefix_holidays = $res['prefix_holidays'];
 		$sufix_holidays = $res['sufix_holidays'];
 		$LTC = $res['LTC'];
-		/////
 		$address = $res['address'];
 		$contact = $res['contact'];
 		$status = 'Awaiting Recommendation';
 		$recommending_auth = $res['recommending_auth'];
+		
 		///// Approving Authority name to be decided automatically
 		$approving_auth = 'newhere';
-		///// 
+		
 		$cur_date = $res['cur_date'];
-		///// if prefix and suffix are not set i.e. application was posted as a CL
 		if($prefix_holidays==NULL) $prefix_holidays = 'NULL';
 		if($sufix_holidays==NULL) $sufix_holidays = 'NULL';
 		if($LTC==NULL) $LTC = 'NULL';
@@ -57,7 +56,37 @@ class Dbhandler{
 			return 0;
 		}
 	}
+	public function getname($userid){
+		$qry = "SELECT name from accounts where username = '$userid'";
+		if($result = mysqli_query($this->conn, $qry)){
+			$arr = mysqli_fetch_assoc($result);
+			return $arr['name'];
+		} 
+	}
 
+	public function getallrec(){
+		$myself = $_SESSION['username'];
+		$qry = "SELECT * from application where recommending_auth = '$myself'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result; 
+	}
+
+	public function fetchapp($app_id){
+		$myself = $_SESSION['username'];
+		$qry = "SELECT * from application where application_id = '$app_id'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+
+	public function recommend_app($app_id){
+		$qry = "UPDATE application SET status = 'Recommended' WHERE application_id = $app_id";
+		$result = mysqli_query($this->conn, $qry);
+	}
+
+	public function reject_app($app_id){
+		$qry = "UPDATE application SET status = 'Rejected' WHERE application_id = $app_id";
+		$result = mysqli_query($this->conn, $qry);
+	}
 }
 
 ?>
