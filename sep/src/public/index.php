@@ -137,11 +137,5 @@ $app->get('/tickets', function (Request $request, Response $response) {
 /*
 Crack
 */
-$app->get('/fun', function(Request $request, Response $response) use($app){
-	$param = "Why is everything so heavy?";
-
-	return $response->withRedirect('https://www.youtube.com/watch?v=FM7MFYoylVs');
-});
-
 	
 $app->run();
