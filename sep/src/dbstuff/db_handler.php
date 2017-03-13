@@ -79,13 +79,51 @@ class Dbhandler{
 	}
 
 	public function recommend_app($app_id){
+		$qry = "SELECT status FROM application WHERE application_id = $app_id";
+		$result = mysqli_query($this->conn, $qry);
+		$rec = mysqli_fetch_assoc($result);
+		if($rec['status'] == 'Rejected' || $rec['status'] == 'Approved') return;
 		$qry = "UPDATE application SET status = 'Recommended' WHERE application_id = $app_id";
 		$result = mysqli_query($this->conn, $qry);
 	}
 
 	public function reject_app($app_id){
+		$qry = "SELECT status FROM application WHERE application_id = $app_id";
+		$result = mysqli_query($this->conn, $qry);
+		$rec = mysqli_fetch_assoc($result);
+		if($rec['status'] == 'Rejected' || $rec['status'] == 'Approved') return;
 		$qry = "UPDATE application SET status = 'Rejected' WHERE application_id = $app_id";
 		$result = mysqli_query($this->conn, $qry);
+	}
+	public function getallapr(){
+		$myself = $_SESSION['username'];
+		$qry = "SELECT * from application where approving_auth = '$myself'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+
+	public function approve_app($app_id){
+		$qry = "UPDATE application SET status = 'Approved' WHERE application_id = $app_id";
+		$result = mysqli_query($this->conn, $qry);
+	}
+
+	public function reject_apr_app($app_id){
+		$qry = "UPDATE application SET status = 'Rejected' WHERE application_id = $app_id";
+		$result = mysqli_query($this->conn, $qry);
+	}
+
+	public function getmyapp(){
+		$myself = $_SESSION['username'];
+		$qry = "SELECT * from application where username = '$myself'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+
+	public function getthatapp($app_id){
+		$myself = $_SESSION['username'];
+		$qry = "SELECT * from application WHERE username = '$myself' and application_id = $app_id";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
 	}
 }
 
