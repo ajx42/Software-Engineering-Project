@@ -123,6 +123,77 @@ $app->get('/reject_app/{app_id}', function(Request $request, Response $response)
 	return $response->withRedirect('../view_rec');
 });
 
+// view approvals for current user
+$app->get('/view_apr', function(Request $request, Response $response) use ($app){
+	if($_SESSION['type']!=3){
+		$this->logger->err('invalid view request');
+		return $response->withRedirect('./user.php');
+	}
+	$user = $_SESSION['username'];
+	$this->logger->info("view request accepted : $user");
+	$con = new Dbhandler();
+	$res = $con->getallapr();
+	$this->logger->info(mysqli_num_rows($res));
+	$this->view->render($response, "viewapr.php", ["rec" => $res]);
+});
+
+// view particular application for approval
+$app->get('/view_apr/{app_id}',  function(Request $request, Response $response) use ($app){
+	$app_id = $request->getAttribute('app_id');
+	$con = new Dbhandler();
+	$app_id = (int)$app_id;
+	$res = $con->fetchapp($app_id);
+	$arr = mysqli_fetch_assoc($res);
+	if($arr['approving_auth']!=$_SESSION['username']){
+		$this->logger->err("invalid app apr view request");
+		return $response->withRedirect('../user.php');
+	}
+	$this->logger->info('app apr view request accepted');
+	$data = array('app_id' => $app_id);	
+	$this->view->render($response, "./view_app_apr.php", ["rec" => $arr]);
+});
+
+// approve an application -> when approve button is pressed
+$app->get('/approve_app/{app_id}', function(Request $request, Response $response) use ($app){
+	$app_id = $request->getAttribute('app_id');
+	$con = new Dbhandler();
+	$app_id = (int)$app_id;
+	$con->approve_app($app_id);
+	$this->logger->info('app apr status changed for $app_id');
+	return $response->withRedirect('../view_apr');
+});
+
+// reject approval request -> when reject button is pressed
+$app->get('/reject_apr_app/{app_id}', function(Request $request, Response $response) use ($app){
+	$app_id = $request->getAttribute('app_id');
+	$con = new Dbhandler();
+	$app_id = (int)$app_id;
+	$con->reject_apr_app($app_id);
+	$this->logger->info('app apr status changed for $app_id');
+	return $response->withRedirect('../view_apr');
+});
+
+// view your leave history
+$app->get('/my_leaves', function(Request $request, Response $response) use ($app){
+	$user = $_SESSION['username'];
+	$this->logger->info("view request accepted : $user");
+	$con = new Dbhandler();
+	$res = $con->getmyapp();
+	$this->logger->info(mysqli_num_rows($res));
+	$this->view->render($response, "viewleaves.php", ["rec" => $res]);
+});
+
+$app->get('/my_leaves/{app_id}', function(Request $request, Response $response) use ($app){
+	$user = $_SESSION['username'];
+	$app_id = $request->getAttribute('app_id');
+	$this->logger->info("view request accepted : $user");
+	$con = new Dbhandler();
+	$res = $con->getthatapp($app_id);
+	$arr = mysqli_fetch_assoc($res);
+	$this->logger->info(mysqli_num_rows($res));
+	$this->view->render($response, "view_app.php", ["rec" => $arr]);
+});
+
 /*
 $app->get('/tickets', function (Request $request, Response $response) {
     $this->logger->addInfo("Ticket list");
