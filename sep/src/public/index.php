@@ -194,6 +194,15 @@ $app->get('/my_leaves/{app_id}', function(Request $request, Response $response) 
 	$this->view->render($response, "view_app.php", ["rec" => $arr]);
 });
 
+$app->get('/balance', function (Request $request, Response $response) use ($app){
+	$user = $_SESSION['username'];
+	$this->logger->info("balance enquiry request : $user");
+	$con = new Dbhandler();
+	$res = $con->getbalance();
+	$arr = mysqli_fetch_assoc($res);
+	$this->view->render($response, "view_bal.php", ["rec" => $arr]);
+});
+
 /*
 $app->get('/tickets', function (Request $request, Response $response) {
     $this->logger->addInfo("Ticket list");
