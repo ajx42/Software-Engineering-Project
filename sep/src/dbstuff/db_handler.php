@@ -125,6 +125,13 @@ class Dbhandler{
 		$result = mysqli_query($this->conn, $qry);
 		return $result;
 	}
+	
+	public function getbalance(){
+		$myself = $_SESSION['username'];
+		$qry = "SELECT * from leave_balance WHERE username = '$myself'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
 }
 
 ?>
