@@ -12,13 +12,16 @@ $config['addContentLengthHeader'] = false;
 
 require '../vendor/autoload.php';
 require '../db_stuff/db_handler.php';
+require '../_mail__/mail_handler.php';
+
 $app = new \Slim\App(["settings" => $config]); 
 
 $container = $app->getContainer();
 
 // views
 $container['view'] = new \Slim\Views\PhpRenderer("./");
-
+// PHPMailer
+$container['mailer'] = new MailHandler();
 
 // logger
 $container['logger'] = function($c) {
@@ -67,6 +70,8 @@ $app->post('/submit', function(Request $request, Response $response) use($app){
 	$con = new Dbhandler();
 	if($con->insert_into_applications($body)){
 		$response->write('sucessfully submitted');
+		$this->mailer->notify_rec($con->getname($body['recommending_auth']),$body['recommending_auth']);
+		$this->mailer->notify_apr($con->getname($body['approving_auth']),$body['approving_auth']);
 		return $response->withRedirect('./user.php');
 	}
 	else{
