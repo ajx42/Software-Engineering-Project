@@ -27,10 +27,10 @@ class MailHandler{
 		$this->mail->Body = $content->body;
 		$this->mail->AltBody = $content->altbody;
 		if(!$this->mail->send()) {
-    		return 0;
+    			return 0;
 		} 
 		else {
-    		return 1;
+    			return 1;
 		}
 	}
 	public function notify_rec($to_name, $to_add){
