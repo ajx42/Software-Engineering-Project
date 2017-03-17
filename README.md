@@ -9,3 +9,4 @@
 4. Twig
 5. PHP Renderer
 6. MySQL
+7. PHPMailer & SendMail
