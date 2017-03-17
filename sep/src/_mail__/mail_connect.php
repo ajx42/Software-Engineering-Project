@@ -18,7 +18,7 @@ class MailConnect {
 
         // optional
         // used only when SMTP requires authentication  
-        $this->mail->SetFrom('office@domain.pl',SMTP_FROMNAME);
+        $this->mail->SetFrom('',SMTP_FROMNAME);
         $this->mail->SMTPAuth = true;
         $this->mail->Username = SMTP_USERNAME;
         $this->mail->Password = SMTP_PASSWORD;
