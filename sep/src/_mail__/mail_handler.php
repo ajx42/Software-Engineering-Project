@@ -45,7 +45,21 @@ class MailHandler{
 		$email->body = "<b>Hi $to_name </b> <br> You have a new approval request. Please log into IITI LPS to take action. <br> <i>Thanks</i>";
 		return $this->Send($email, $to_name, $to_add);
 	}
+	public function join_notify($status){
+		$email = new EmailFormat();
+		$to_name = $_SESSION['myname'];
+		$to_add = $_SESSION['username'];
+		if($status){
+			$email->subject = "Joining Report Submitted";
+			$email->body = "<b>Hi $to_name </b> <br> We are pleased to inform you that your Joining Report has been successfully submitted and processed. <br> <i>Thanks</i>";
+		}
+		else{
+			$email->subject = "Failed to submit Joining Report";
+			$email->body = "<b>Hi $to_name </b> <br> We failed to process your Joining Report. Kindly fill it again. Please recheck your details if problem persists. <br> <i>Thanks</i>";	
+		}
+		return $this->Send($email, $to_name, $to_add);
 
+	}
 }
 
 ?>
