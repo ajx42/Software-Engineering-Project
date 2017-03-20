@@ -227,6 +227,30 @@ $app->post('/submit_join', function (Request $request, Response $response) use (
 	return $response->withRedirect('./user.php');
 });
 
+$app->get('/settings', function (Request $request, Response $response) use ($app){
+	//$error = $request->getHeader('status');
+	//$headers = $request->getHeaders();
+	//foreach ($headers as $name => $values) {
+    //	$this->logger->info( $name . ": " . implode(", ", $values));
+	//}
+	//$this->logger->info("Joining Report Submitted : $errors");
+	$this->view->render($response, "settings.php");
+});
+
+$app->post('/email_notify', function (Request $request, Response $response) use ($app){
+	$body = $request->getParams();
+	$con = new Dbhandler();
+	$con->modify_email_notify($body);
+	return $response->withRedirect('./settings');
+});
+
+$app->post('/change_password', function (Request $request, Response $response) use ($app){
+	$body = $request->getParams();
+	$con = new Dbhandler();
+	$status = $con->change_password($body);
+	//$newResponse = $response->withHeader('Content-type', $status);
+	return $response->withRedirect('./settings');
+});
 
 /*
 $app->get('/tickets', function (Request $request, Response $response) {
