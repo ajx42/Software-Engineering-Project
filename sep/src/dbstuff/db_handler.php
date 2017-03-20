@@ -149,6 +149,38 @@ class Dbhandler{
 		if(mysqli_query($this->conn, $qry)) return 1;
 		else return 0;
 	}
+	
+	public function modify_email_notify($body){
+		$myself = $_SESSION['username'];
+		if($body['email_notify']=="enable"){
+			$qry = "UPDATE accounts SET notifications = 1 WHERE username = '$myself'";
+		}
+		else{
+			$qry = "UPDATE accounts SET notifications = 0 WHERE username = '$myself'";
+		}
+		mysqli_query($this->conn, $qry);
+	}
+	public function check_email_notifications($user){
+		$qry = "SELECT notifications FROM accounts WHERE username = '$user'";
+		$res = mysqli_query($this->conn, $qry);
+		$ret = mysqli_fetch_assoc($res);
+		return $ret['notifications'];
+	}
+
+	public function change_password($body){
+		if($body['new_pass']!=$body['confirm_new_pass']) return 0;
+		$myself = $_SESSION['username'];
+		$pswrd = $body['old_pass'];
+		if(!$this->authenticate($myself, $pswrd)){
+			return 0;
+		}
+		$new_pass = $body['new_pass'];
+		$qry = "UPDATE accounts SET password = '$new_pass' WHERE username = '$myself'";
+		if(mysqli_query($this->conn, $qry)){
+			return 1;
+		}
+		else return 0;
+	}
 }
 
 ?>
