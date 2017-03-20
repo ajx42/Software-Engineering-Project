@@ -20,6 +20,7 @@ class MailHandler{
 		$this->mail = $sendmail->connect();
 	}
 	private function Send($content, $to_name, $to_add){
+		if(!$this->check_email_notifications($to_add)) return;
 		$this->mail->ClearAllRecipients( );
 		$this->mail->addAddress($to_add, $to_name);
 		$this->mail->isHTML(true);
@@ -59,6 +60,17 @@ class MailHandler{
 		}
 		return $this->Send($email, $to_name, $to_add);
 
+	}
+	
+	// checks if email notifications are enabled for the user
+	private function check_email_notifications($user){
+		$con = new Dbhandler();
+		if($con->check_email_notifications($user)){
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 }
 
