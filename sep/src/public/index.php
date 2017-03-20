@@ -208,6 +208,26 @@ $app->get('/balance', function (Request $request, Response $response) use ($app)
 	$this->view->render($response, "view_bal.php", ["rec" => $arr]);
 });
 
+
+// View for Joining Report - Form
+$app->get('/join', function (Request $request, Response $response) use ($app){
+	$arr['user'] = $_SESSION['username'];
+	$arr['name'] = $_SESSION['myname'];
+	$this->view->render($response, "joining_report.php", ["rec" => $arr]);
+});
+
+// Post Joining Report Information
+$app->post('/submit_join', function (Request $request, Response $response) use ($app){
+	$body = $request->getParams();
+	$this->logger->info("Joining Report Submitted : $user");
+	$con = new Dbhandler();
+	$status = $con->joining($body);
+	$this->mailer->join_notify($status);	
+	//$this->logger->info($con->joining($body));
+	return $response->withRedirect('./user.php');
+});
+
+
 /*
 $app->get('/tickets', function (Request $request, Response $response) {
     $this->logger->addInfo("Ticket list");
