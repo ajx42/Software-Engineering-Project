@@ -132,6 +132,23 @@ class Dbhandler{
 		$result = mysqli_query($this->conn, $qry);
 		return $result;
 	}
+	public function joining($details){
+		$myself = $_SESSION['username'];
+		$from_date =  new DateTime($details['period_from']);
+		$to_date = new DateTime($details['period_to']);
+		$number_of_days = $to_date->diff($from_date)->format("%a")+1;;
+		if($details['nature'] == "HPL"){
+			$qry = "UPDATE leave_balance SET HPL = HPL - 2*$number_of_days WHERE username = '$myself'";
+		}
+		else if($details['nature'] == "CL"){
+			$qry = "UPDATE leave_balance SET CL = CL - $number_of_days WHERE username = '$myself'";
+		}
+		else if($details['nature'] == "Vacation"){
+			$qry = "UPDATE leave_balance SET Vacation = Vacation - $number_of_days WHERE username = '$myself'";
+		}
+		if(mysqli_query($this->conn, $qry)) return 1;
+		else return 0;
+	}
 }
 
 ?>
