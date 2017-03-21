@@ -181,6 +181,20 @@ class Dbhandler{
 		}
 		else return 0;
 	}
+	
+	public function getpenapr(){
+		$myself = $_SESSION['username'];
+		$qry = "SELECT * from application where approving_auth = '$myself' AND status != 'Rejected' AND status != 'Approved'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+
+	public function getpenrec(){
+		$myself = $_SESSION['username'];
+		$qry = "SELECT * from application where recommending_auth = '$myself' AND status = 'Awaiting Recommendation'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
 }
 
 ?>
