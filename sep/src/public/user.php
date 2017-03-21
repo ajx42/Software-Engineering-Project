@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>IITI LPS</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -46,7 +46,12 @@
         <?php include 'bars.php' ?>
         <div id="page-wrapper">
             <!-- add content here -->
-
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">IIT Indore Leave Processing System</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
         </div>
 
     </div>
