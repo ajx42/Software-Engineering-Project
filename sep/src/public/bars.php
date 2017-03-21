@@ -273,12 +273,12 @@
                         <?php
                        
                             if($_SESSION['type']==2){
-                                echo '<li><a href="tables.php"><i class="fa fa-files-o fa-fw"></i>Pending Recommendations</a></li>';
+                                echo '<li><a href="./pending_recommendations"><i class="fa fa-files-o fa-fw"></i>Pending Recommendations</a></li>';
                                 echo '<li><a href="./view_rec"><i class="fa fa-files-o fa-fw"></i>All Recommendations</a></li>';
                             }
                             if($_SESSION['type']==3){
-                                echo '<li><a href="tables.php"><i class="fa fa-files-o fa-fw"></i>Pending Approvals</a></li>';
-                                echo '<li><a href="tables.php"><i class="fa fa-files-o fa-fw"></i>All Approvals</a></li>';
+                                echo '<li><a href="./pending_approvals"><i class="fa fa-files-o fa-fw"></i>Pending Approvals</a></li>';
+                                echo '<li><a href="./view_apr"><i class="fa fa-files-o fa-fw"></i>All Approvals</a></li>';
                             }
                         
 
