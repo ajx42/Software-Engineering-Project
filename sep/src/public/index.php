@@ -227,6 +227,7 @@ $app->post('/submit_join', function (Request $request, Response $response) use (
 	return $response->withRedirect('./user.php');
 });
 
+// view for system settings
 $app->get('/settings', function (Request $request, Response $response) use ($app){
 	//$error = $request->getHeader('status');
 	//$headers = $request->getHeaders();
@@ -237,6 +238,7 @@ $app->get('/settings', function (Request $request, Response $response) use ($app
 	$this->view->render($response, "settings.php");
 });
 
+// enable-disable email notifications
 $app->post('/email_notify', function (Request $request, Response $response) use ($app){
 	$body = $request->getParams();
 	$con = new Dbhandler();
@@ -244,12 +246,41 @@ $app->post('/email_notify', function (Request $request, Response $response) use 
 	return $response->withRedirect('./settings');
 });
 
+// change password
 $app->post('/change_password', function (Request $request, Response $response) use ($app){
 	$body = $request->getParams();
 	$con = new Dbhandler();
 	$status = $con->change_password($body);
 	//$newResponse = $response->withHeader('Content-type', $status);
 	return $response->withRedirect('./settings');
+});
+
+// view pending approval requests
+$app->get('/pending_approvals', function(Request $request, Response $response) use ($app){
+	if($_SESSION['type']!=3){
+		$this->logger->err('invalid view request');
+		return $response->withRedirect('./user.php');
+	}
+	$user = $_SESSION['username'];
+	$this->logger->info("view request accepted : $user");
+	$con = new Dbhandler();
+	$res = $con->getpenapr();
+	$this->logger->info(mysqli_num_rows($res));
+	$this->view->render($response, "viewapr.php", ["rec" => $res]);
+});
+
+// view applications awaiting recommendations
+$app->get('/pending_recommendations', function(Request $request, Response $response) use ($app){
+	if($_SESSION['type']!=2){
+		$this->logger->err('invalid view request');
+		return $response->withRedirect('./user.php');
+	}
+	$user = $_SESSION['username'];
+	$this->logger->info("view request accepted : $user");
+	$con = new Dbhandler();
+	$res = $con->getpenrec();
+	$this->logger->info(mysqli_num_rows($res));
+	$this->view->render($response, "viewrec.php", ["rec" => $res]);
 });
 
 /*
