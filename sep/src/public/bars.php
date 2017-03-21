@@ -212,9 +212,9 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <li><a href="./user.php"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        <li><a href="./settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="./"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -241,20 +241,24 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="./user.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="forms.php"><i class="fa fa-edit fa-fw"></i> Apply for Leave</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-dashboard fa-fw"></i> Leave Balance</a>
-                        </li>
-                         <li>
-                            <a href="#"><i class="fa fa-dashboard fa-fw"></i> Leave History</a>
+                            <a href="./join"><i class="fa fa-edit fa-fw"></i> Submit Joining Report</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Account Settings</a>
+                            <a href="./balance"><i class="fa fa-dashboard fa-fw"></i> Leave Balance</a>
                         </li>
+                         <li>
+                            <a href="./my_leaves"><i class="fa fa-dashboard fa-fw"></i> Leave History</a>
+                        </li>
+                        <li>
+                            <a href="./settings"><i class="fa fa-wrench fa-fw"></i> Account Settings</a>
+                        </li>
+
 
                         <!--li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>Charts<span class="fa arrow"></span></a>
