@@ -120,9 +120,14 @@
                                     <td> <?php echo $rec['contact'] ?> </td>
                                     </tr>
                                     <tr class="odd gradeX">
+                                    <td> <b> Recommending Authority </b> </td>
+                                    <td> <?php echo $rec['recommending_auth'] ?> </td>
+                                    </tr>
+                                    <tr class="odd gradeX">
                                     <td> <b> Approving Authority </b> </td>
                                     <td> <?php echo $rec['approving_auth'] ?> </td>
                                     </tr>
+
                                     <tr class="odd gradeX">
                                     <td> <b> Status </b> </td>
                                     <td> <?php echo $rec['status'] ?> </td>
@@ -131,14 +136,19 @@
                                     <td> <b> Date </b> </td>
                                     <td> <?php echo $rec['cur_date'] ?> </td>
                                     </tr>
+
                                     <tr class="odd gradeX">
-                                    <td> <b> Recommending Authority Remark </b> </td>
-                                    <td> <?php echo $rec['recommender_comments'] ?> </td>
+                                    <td> <b> Remarks - Recommending Authority </b> </td>
+                                    <td> <?php echo $rec['recommender_comments'] ?></td>
+                                    
                                     </tr>
-                                    <tr class="odd gradeX">
-                                    <td> <b> Approving Authority Remark </b> </td>
+
+                                     <tr class="odd gradeX">
+                                    <td> <b> Remarks - Approving Authority </b> </td>
                                     <td> <?php echo $rec['approver_comments'] ?> </td>
                                     </tr>
+
+                                    
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
@@ -152,34 +162,16 @@
         
         
         <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <form role="form"  method="post">
-                                    <div class="form-group">
-                                        <label>Comments (Optional)</label>
-                                        <textarea class="form-control" cols="10" rows="6" name="comment"></textarea>
-                                    </div>
-
-                            <!--a class="btn btn-default btn-md btn-block"  href="../recommend_app/<?php echo $rec['application_id']?>"><b>Recommend</b></a-->
-                                <!--button type="submit" class="btn btn-default">Submit Button</button-->
-                                <input type="submit" class="btn btn-default"  formaction="../recommend_app/<?php echo $rec['application_id']?>"" value="Recommend" />
-                                <input type="submit" class="btn btn-default"  formaction="../reject_app/<?php echo $rec['application_id']?>" value="Reject" />
-                            </form>
+                            <a class="btn btn-default btn-md btn-block"  href="../my_leaves"><b>Back</b></a>
                         </div>
                         
                     </div>
                     <!-- /.panel -->
                 </div>
-                <!-- /.col-lg-6 -->
-                <!--div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                        <!-- add this attribute to button to open in new tab target="_blank" -->
-                            <!--a class="btn btn-default btn-md btn-block"  href="../reject_app/<?php echo $rec['application_id'] ?>"><b>Reject</b></a>
-                        </div>
-                       
-                </div-->
+                
                 <!-- /.col-lg-6 -->
             </div>
             <!-- /.row -->

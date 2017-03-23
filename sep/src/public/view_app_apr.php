@@ -121,7 +121,7 @@
                                     </tr>
                                     <tr class="odd gradeX">
                                     <td> <b> Approving Authority </b> </td>
-                                    <td> <?php echo $rec['approving_auth'] ?> </td>
+                                    <td> <?php echo $rec['recommending_auth'] ?> </td>
                                     </tr>
                                     <tr class="odd gradeX">
                                     <td> <b> Status </b> </td>
@@ -139,6 +139,7 @@
                                     <td> <b> Approving Authority Remark </b> </td>
                                     <td> <?php echo $rec['approver_comments'] ?> </td>
                                     </tr>
+
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
@@ -149,7 +150,6 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-        
         
         <div class="row">
                 <div class="col-lg-12">
@@ -163,8 +163,9 @@
 
                             <!--a class="btn btn-default btn-md btn-block"  href="../recommend_app/<?php echo $rec['application_id']?>"><b>Recommend</b></a-->
                                 <!--button type="submit" class="btn btn-default">Submit Button</button-->
-                                <input type="submit" class="btn btn-default"  formaction="../recommend_app/<?php echo $rec['application_id']?>"" value="Recommend" />
-                                <input type="submit" class="btn btn-default"  formaction="../reject_app/<?php echo $rec['application_id']?>" value="Reject" />
+                                <input type="submit" class="btn btn-default"  formaction="../approve_app/<?php echo $rec['application_id']?>" value="<?php if($rec['status'] == 'Awaiting Recommendation') echo "Recommend and Approve";
+                            else echo "Approve"; ?>" />
+                                <input type="submit" class="btn btn-default"  formaction="../reject_apr_app/<?php echo $rec['application_id'] ?>" value="Reject" />
                             </form>
                         </div>
                         
@@ -176,12 +177,38 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                         <!-- add this attribute to button to open in new tab target="_blank" -->
-                            <!--a class="btn btn-default btn-md btn-block"  href="../reject_app/<?php echo $rec['application_id'] ?>"><b>Reject</b></a>
+                            <!--a class="btn btn-default btn-md btn-block"  href="../reject_app/"><b>Reject</b></a>
                         </div>
                        
                 </div-->
                 <!-- /.col-lg-6 -->
             </div>
+        <!-- add this attribute to button to open in new tab target="_blank" -->
+        <!--div class="row">
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a class="btn btn-default btn-md btn-block"  href="../approve_app/<!?php echo $rec['application_id']?>"><b>
+                            <!?php if($rec['status'] == 'Awaiting Recommendation') echo "Recommend and Approve";
+                            else echo "Approve"; ?>
+                            
+                            </b></a>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+               
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        
+                            <a class="btn btn-default btn-md btn-block"  href="../reject_apr_app/<!?php echo $rec['application_id'] ?>"><b>Reject</b></a>
+                        </div>
+                       
+                </div>
+                
+            </div-->
             <!-- /.row -->
                 </div>
                 </div>
