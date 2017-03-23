@@ -13,14 +13,12 @@ $config['addContentLengthHeader'] = false;
 require '../vendor/autoload.php';
 require '../db_stuff/db_handler.php';
 require '../_mail__/mail_handler.php';
-
 $app = new \Slim\App(["settings" => $config]); 
 
 $container = $app->getContainer();
 
 // views
 $container['view'] = new \Slim\Views\PhpRenderer("./");
-// PHPMailer
 $container['mailer'] = new MailHandler();
 
 // logger
@@ -66,13 +64,14 @@ $app->get('/', function(Request $request, Response $response) use ($app){
 // submit application form
 $app->post('/submit', function(Request $request, Response $response) use($app){
 	$body = $request->getParams();
-	$body['approving_auth']=''; // todo: fetch approving authority name from db
+	$body['approving_auth']='aditya1304jain@gmail.com'; // todo: fetch approving authority name from db
 	$con = new Dbhandler();
 	if($con->insert_into_applications($body)){
 		$response->write('sucessfully submitted');
 		$this->mailer->notify_rec($con->getname($body['recommending_auth']),$body['recommending_auth']);
 		$this->mailer->notify_apr($con->getname($body['approving_auth']),$body['approving_auth']);
 		return $response->withRedirect('./user.php');
+
 	}
 	else{
 		$this->logger->err('mysqli error');
@@ -95,6 +94,7 @@ $app->get('/view_rec', function(Request $request, Response $response) use ($app)
 	$this->view->render($response, "viewrec.php", ["rec" => $res]);
 });
 
+// view an application
 $app->get('/view_rec/{app_id}',  function(Request $request, Response $response) use ($app){
 	$app_id = $request->getAttribute('app_id');
 	$con = new Dbhandler();
@@ -110,20 +110,24 @@ $app->get('/view_rec/{app_id}',  function(Request $request, Response $response) 
 	$this->view->render($response, "./view_app_rec.php", ["rec" => $arr]);
 });
 
-$app->get('/recommend_app/{app_id}', function(Request $request, Response $response) use ($app){
+// recommend application -> when recommend is clicked
+$app->post('/recommend_app/{app_id}', function(Request $request, Response $response) use ($app){
 	$app_id = $request->getAttribute('app_id');
+	$body = $request->getParams();
 	$con = new Dbhandler();
 	$app_id = (int)$app_id;
-	$con->recommend_app($app_id);
+	$con->recommend_app($app_id, $body['comment']);
 	$this->logger->info('app rec status changed for $app_id');
 	return $response->withRedirect('../view_rec');
 });
 
-$app->get('/reject_app/{app_id}', function(Request $request, Response $response) use ($app){
+// reject application -> when reject button is clicked
+$app->post('/reject_app/{app_id}', function(Request $request, Response $response) use ($app){
 	$app_id = $request->getAttribute('app_id');
+	$body = $request->getParams();
 	$con = new Dbhandler();
 	$app_id = (int)$app_id;
-	$con->reject_app($app_id);
+	$con->reject_app($app_id, $body['comment']);
 	$this->logger->info('app rec status changed for $app_id');
 	return $response->withRedirect('../view_rec');
 });
@@ -159,21 +163,23 @@ $app->get('/view_apr/{app_id}',  function(Request $request, Response $response) 
 });
 
 // approve an application -> when approve button is pressed
-$app->get('/approve_app/{app_id}', function(Request $request, Response $response) use ($app){
+$app->post('/approve_app/{app_id}', function(Request $request, Response $response) use ($app){
 	$app_id = $request->getAttribute('app_id');
+	$body = $request->getParams();
 	$con = new Dbhandler();
 	$app_id = (int)$app_id;
-	$con->approve_app($app_id);
+	$con->approve_app($app_id, $body['comment']);
 	$this->logger->info('app apr status changed for $app_id');
 	return $response->withRedirect('../view_apr');
 });
 
 // reject approval request -> when reject button is pressed
-$app->get('/reject_apr_app/{app_id}', function(Request $request, Response $response) use ($app){
+$app->post('/reject_apr_app/{app_id}', function(Request $request, Response $response) use ($app){
 	$app_id = $request->getAttribute('app_id');
+	$body = $request->getParams();
 	$con = new Dbhandler();
 	$app_id = (int)$app_id;
-	$con->reject_apr_app($app_id);
+	$con->reject_apr_app($app_id, $body['comment']);
 	$this->logger->info('app apr status changed for $app_id');
 	return $response->withRedirect('../view_apr');
 });
@@ -208,7 +214,6 @@ $app->get('/balance', function (Request $request, Response $response) use ($app)
 	$this->view->render($response, "view_bal.php", ["rec" => $arr]);
 });
 
-
 // View for Joining Report - Form
 $app->get('/join', function (Request $request, Response $response) use ($app){
 	$arr['user'] = $_SESSION['username'];
@@ -227,7 +232,6 @@ $app->post('/submit_join', function (Request $request, Response $response) use (
 	return $response->withRedirect('./user.php');
 });
 
-// view for system settings
 $app->get('/settings', function (Request $request, Response $response) use ($app){
 	//$error = $request->getHeader('status');
 	//$headers = $request->getHeaders();
@@ -238,7 +242,6 @@ $app->get('/settings', function (Request $request, Response $response) use ($app
 	$this->view->render($response, "settings.php");
 });
 
-// enable-disable email notifications
 $app->post('/email_notify', function (Request $request, Response $response) use ($app){
 	$body = $request->getParams();
 	$con = new Dbhandler();
@@ -246,7 +249,6 @@ $app->post('/email_notify', function (Request $request, Response $response) use 
 	return $response->withRedirect('./settings');
 });
 
-// change password
 $app->post('/change_password', function (Request $request, Response $response) use ($app){
 	$body = $request->getParams();
 	$con = new Dbhandler();
@@ -255,7 +257,6 @@ $app->post('/change_password', function (Request $request, Response $response) u
 	return $response->withRedirect('./settings');
 });
 
-// view pending approval requests
 $app->get('/pending_approvals', function(Request $request, Response $response) use ($app){
 	if($_SESSION['type']!=3){
 		$this->logger->err('invalid view request');
@@ -269,7 +270,6 @@ $app->get('/pending_approvals', function(Request $request, Response $response) u
 	$this->view->render($response, "viewapr.php", ["rec" => $res]);
 });
 
-// view applications awaiting recommendations
 $app->get('/pending_recommendations', function(Request $request, Response $response) use ($app){
 	if($_SESSION['type']!=2){
 		$this->logger->err('invalid view request');
@@ -282,6 +282,7 @@ $app->get('/pending_recommendations', function(Request $request, Response $respo
 	$this->logger->info(mysqli_num_rows($res));
 	$this->view->render($response, "viewrec.php", ["rec" => $res]);
 });
+
 
 /*
 $app->get('/tickets', function (Request $request, Response $response) {
@@ -297,5 +298,13 @@ $app->get('/tickets', function (Request $request, Response $response) {
 /*
 Crack
 */
-	
+
+/*
+Test Requests
+*/
+
+$app->get('/yo', function(Request $request, Response $response) use($app){
+	$this->mailer->notify_rec('Aditya', 'cse150001001@iiti.ac.in');
+});
+
 $app->run();
