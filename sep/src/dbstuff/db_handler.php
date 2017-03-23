@@ -24,7 +24,7 @@ class Dbhandler{
 	public function insert_into_applications($res){
 
 		$username = $_SESSION['username'];
-		$name = $res['name'];
+		$name = $_SESSION['myname'];
 		$nature = $res['nature'];
 		$designation = $res['designation'];
 		$department = $res['department'];
@@ -40,7 +40,7 @@ class Dbhandler{
 		$recommending_auth = $res['recommending_auth'];
 		
 		///// Approving Authority name to be decided automatically
-		$approving_auth = 'newhere';
+		$approving_auth = 'aditya1304jain@gmail.com';
 		
 		$cur_date = $res['cur_date'];
 		if($prefix_holidays==NULL) $prefix_holidays = 'NULL';
@@ -78,23 +78,24 @@ class Dbhandler{
 		return $result;
 	}
 
-	public function recommend_app($app_id){
+	public function recommend_app($app_id, $comment){
 		$qry = "SELECT status FROM application WHERE application_id = $app_id";
 		$result = mysqli_query($this->conn, $qry);
 		$rec = mysqli_fetch_assoc($result);
 		if($rec['status'] == 'Rejected' || $rec['status'] == 'Approved') return;
-		$qry = "UPDATE application SET status = 'Recommended' WHERE application_id = $app_id";
+		$qry = "UPDATE application SET status = 'Recommended', recommender_comments = '$comment' WHERE application_id = $app_id";
 		$result = mysqli_query($this->conn, $qry);
 	}
 
-	public function reject_app($app_id){
+	public function reject_app($app_id, $comment){
 		$qry = "SELECT status FROM application WHERE application_id = $app_id";
 		$result = mysqli_query($this->conn, $qry);
 		$rec = mysqli_fetch_assoc($result);
 		if($rec['status'] == 'Rejected' || $rec['status'] == 'Approved') return;
-		$qry = "UPDATE application SET status = 'Rejected' WHERE application_id = $app_id";
+		$qry = "UPDATE application SET status = 'Not Recommended', recommender_comments = '$comment' WHERE application_id = $app_id";
 		$result = mysqli_query($this->conn, $qry);
 	}
+
 	public function getallapr(){
 		$myself = $_SESSION['username'];
 		$qry = "SELECT * from application where approving_auth = '$myself'";
@@ -102,13 +103,13 @@ class Dbhandler{
 		return $result;
 	}
 
-	public function approve_app($app_id){
-		$qry = "UPDATE application SET status = 'Approved' WHERE application_id = $app_id";
+	public function approve_app($app_id, $comment){
+		$qry = "UPDATE application SET status = 'Approved', approver_comments = '$comment' WHERE application_id = $app_id";
 		$result = mysqli_query($this->conn, $qry);
 	}
 
-	public function reject_apr_app($app_id){
-		$qry = "UPDATE application SET status = 'Rejected' WHERE application_id = $app_id";
+	public function reject_apr_app($app_id, $comment){
+		$qry = "UPDATE application SET status = 'Rejected', approver_comments = '$comment' WHERE application_id = $app_id";
 		$result = mysqli_query($this->conn, $qry);
 	}
 
@@ -125,13 +126,14 @@ class Dbhandler{
 		$result = mysqli_query($this->conn, $qry);
 		return $result;
 	}
-	
+
 	public function getbalance(){
 		$myself = $_SESSION['username'];
 		$qry = "SELECT * from leave_balance WHERE username = '$myself'";
 		$result = mysqli_query($this->conn, $qry);
 		return $result;
 	}
+
 	public function joining($details){
 		$myself = $_SESSION['username'];
 		$from_date =  new DateTime($details['period_from']);
@@ -149,7 +151,7 @@ class Dbhandler{
 		if(mysqli_query($this->conn, $qry)) return 1;
 		else return 0;
 	}
-	
+
 	public function modify_email_notify($body){
 		$myself = $_SESSION['username'];
 		if($body['email_notify']=="enable"){
@@ -181,7 +183,7 @@ class Dbhandler{
 		}
 		else return 0;
 	}
-	
+
 	public function getpenapr(){
 		$myself = $_SESSION['username'];
 		$qry = "SELECT * from application where approving_auth = '$myself' AND status != 'Rejected' AND status != 'Approved'";
@@ -195,6 +197,7 @@ class Dbhandler{
 		$result = mysqli_query($this->conn, $qry);
 		return $result;
 	}
+
 }
 
 ?>
