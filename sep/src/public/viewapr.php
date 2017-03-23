@@ -48,7 +48,7 @@
             <!-- add content here -->
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">All Recommendations</h1>
+                    <h1 class="page-header">All Approvals</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -77,21 +77,25 @@
                                 </thead>
                                 <tbody>
                                     <?php while($res = mysqli_fetch_assoc($rec)){ ?>
+                                    <?php if($res['status']=='Not Recommended') {
+                                            continue;
+                                        }
+                                    ?>
                                     <tr  class = <?php 
                                         if($res['status']=='Awaiting Recommendation') {
-                                            echo "info";
+                                            echo "warning";
                                         }
-                                        else if($res['status']=='Recommended'){
+                                        else if($res['status']=='Approved'){
                                             echo "success";
                                         }
-                                        else if($res['status'] == 'Approved'){
-                                            echo "warning";
+                                        else if($res['status']=='Recommended'){
+                                            echo "info";
                                         }
                                         else{
                                             echo "danger";
                                         }
                                     ?> >
-                                        <td><a href = "./view_rec/<?php echo $res['application_id']; ?>"><?php echo $res['application_id']?> </a></td>
+                                        <td><a href = "./view_apr/<?php echo $res['application_id']; ?>"><?php echo $res['application_id']?> </a></td>
                                         <td><?php echo $res['name'] ?></td>
                                         <td><?php echo $res['nature'] ?></td>
                                         <td><?php echo $res['designation'] ?></td>
