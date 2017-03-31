@@ -23,6 +23,17 @@ session_start();
         }
         
     }
+    function availing()
+    {
+        if(document.getElementById("presuf3").value === "Yes")
+        {
+            document.getElementById("encash").removeAttribute('disabled');
+        }
+        else
+        {
+            document.getElementById("encash").disabled='false';
+        }
+    }
 </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,7 +42,9 @@ session_start();
     <meta name="author" content="">
 
     <title>Apply for Leave</title>
-
+    <link href="../combox/js/bootstrap-combobox.js" rel="stylesheet">
+    <link href="../combox/css/bootstrap-combobox.css" rel="stylesheet">
+    
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -74,10 +87,10 @@ session_start();
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form role="form" action="http://localhost/sep-2/src/public/submit" method="post">
+                                    <form role="form" action="./submit" method="post">
                                         <div class="form-group">
                                             <label>Name of Applicant</label>
-                                            <input class="form-control" name="name" required>
+                                            <input class="form-control" name="name" value = "<?php echo $_SESSION['myname']?>" readonly required>
                                         </div>
 
                                         <div class="form-group">
@@ -86,21 +99,13 @@ session_start();
                                         </div>
                                         <div class="form-group">
                                             <label>Department</label>
-                                            <select class="form-control" name="department" required>
-                                                <option>CSE</option>
-                                                <option>EE</option>
-                                                <option>ME</option>
-                                                <option>MEMS</option>
-                                                <option>CE</option>
-                                                <option>BSBE</option>
-                                                <option>PHY</option>
-                                                <option>CHE</option>
-                                                <option>MA</option>
-                                                <option>Other</option>
-                                            </select>
+                                            <input class="form-control" name="department" value = "<?php echo $dep ?>" readonly required>
+                                            
                                         </div>
                                         <div class="form-group">
                                             <label>Nature of Leave</label>
+
+
                                             <select id="type_of_leave" class="form-control" name="nature" onClick="disabling();"   required>
                                                 <option>CL</option>
                                                 <option>HPL</option>
@@ -117,14 +122,17 @@ session_start();
                                         </div>
                                         <div class="form-group">
                                             <label>Recommending Authority</label>
-                                            <select class="form-control" name="recommending_auth" required>
-
-                                                <option>1REC</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
+                                            <select class="combobox input-large form-control" name = "recommending_auth" required>
+                                                <option></option>
+                                                <?php while($ret = mysqli_fetch_assoc($rec)){ ?> 
+                                                    <option value = "<?php echo $ret['username']; ?>"><?php echo $ret['name']; ?> </option>
+                                                <?php } ?>
                                             </select>
+                                            <script type="text/javascript">
+                                                $(document).ready(function(){
+                                                    $('.combobox').combobox();
+                                                });
+                                            </script>
                                         </div>
                                         
                                         
@@ -145,11 +153,18 @@ session_start();
                                             </div>
                                             <div class="form-group">
                                             <label>Proposes to avail for LTC</label>
-                                            <select class="form-control" id="presuf3" name="LTC" disabled="false" value="No">
+                                            <select class="form-control" id="presuf3" name="LTC" disabled="false" value="No" onClick="availing();">
                                                 <option>No</option>
                                                 <option>Yes</option>
                                             </select>
                                             </div>
+                                            <div class="form-group">
+                                            <label>Want to encash EL?</label>
+                                            <select class="form-control" id="encash" name="LTC" disabled="false" value="No">
+                                                <option>No</option>
+                                                <option>Yes</option>
+                                            </select>
+                                            </div>                                            
                                             <div class="form-group">
                                                 <label>Date</label>
                                                 <input type="date" class="form-control" name="cur_date" required>
