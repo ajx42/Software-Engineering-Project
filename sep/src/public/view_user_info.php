@@ -70,7 +70,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form role="form" action="./update_basics" method="post">
+                            <form role="form" action="../update_basics" method="post">
                             <div class="row">
                                 <div class="col-lg-6">
                                 
@@ -142,7 +142,7 @@
                             Leave Balance
                         </div>
                         <div class="panel-body">
-                            <form role="form" action="./leave_submit" method="post">
+                            <form role="form" action="../leave_submit" method="post">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
