@@ -43,7 +43,7 @@
     <div id="wrapper">
 
         <!-- Navigation and Side bars-->
-        <?php include 'bars.php' ?>
+        <?php include 'bars_internal.php' ?>
         <div id="page-wrapper">
             <!-- add content here -->
             <div class="row">
