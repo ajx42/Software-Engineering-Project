@@ -25,10 +25,10 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="../user.php"><i class="fa fa-user fa-fw"></i> Site News</a>
+                        <li><a href="../admin"><i class="fa fa-user fa-fw"></i> Site News</a>
                         </li>
-                        <li><a href="../settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
+                        <!--li><a href="../settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li-->
                         <li class="divider"></li>
                         <li><a href="../"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
@@ -65,64 +65,6 @@
                         <li>
                             <a href="../view_all_users"><i class="fa fa-edit fa-fw"></i> All Users</a>
                         </li>
-                        <!--li>
-                            <a href="./balance"><i class="fa fa-dashboard fa-fw"></i> Leave Balance</a>
-                        </li>
-                         <li>
-                            <a href="./my_leaves"><i class="fa fa-dashboard fa-fw"></i> Leave History</a>
-                        </li>
-                        <li>
-                            <a href="./settings"><i class="fa fa-wrench fa-fw"></i> Account Settings</a>
-                        </li-->
-
-
-                        <!--li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>Charts<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="flot.html">Flot Charts</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html">Morris.js Charts</a>
-                                </li>
-                            </ul>
-                            
-                        </li-->
-                        
-                        
-                        
-                        
-                       
-                        <!--li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                    </ul>
-                                   
-                                </li>
-                            </ul>
-                           
-                        </li-->
                         
                     </ul>
                 </div>
