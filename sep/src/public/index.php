@@ -47,7 +47,10 @@ $app->post('/articles', function(Request $request, Response $response) use($app)
 		$_SESSION['username'] = $body['user'];
 		$_SESSION['type'] = $check;
 		$_SESSION['myname'] = $con->getname($body['user']);
-		return $response->withRedirect('./user.php');
+		if($check == 4){
+			return $response->withRedirect('./admin');
+		}
+		else return $response->withRedirect('./user.php');
 	}
 	else{
 		return $response->withRedirect('./login.html');
@@ -209,7 +212,7 @@ $app->get('/balance', function (Request $request, Response $response) use ($app)
 	$user = $_SESSION['username'];
 	$this->logger->info("balance enquiry request : $user");
 	$con = new Dbhandler();
-	$res = $con->getbalance();
+	$res = $con->getbalance($user);
 	$arr = mysqli_fetch_assoc($res);
 	$this->view->render($response, "view_bal.php", ["rec" => $arr]);
 });
@@ -283,6 +286,64 @@ $app->get('/pending_recommendations', function(Request $request, Response $respo
 	$this->view->render($response, "viewrec.php", ["rec" => $res]);
 });
 
+$app->get('/apply', function(Request $request, Response $response) use ($app){
+	if(!isset($_SESSION['username'])) return $response->withRedirect('./');
+	$con = new Dbhandler();
+	$rec = $con->get_recommenders($_SESSION['username']);
+	$dep = $con->getmydep($_SESSION['username']);
+	//$dep = $con->get_departments();
+	$this->view->render($response, "forms.php", ["rec" => $rec, "dep" => $dep]);
+});
+
+$app->get('/admin', function(Request $request, Response $response) use ($app){
+	if(!isset($_SESSION['username'])) return $response->withRedirect('./');
+	$this->view->render($response, "admin.php"/*, ["rec" => $rec, "dep" => $dep]*/);
+});
+
+$app->get('/view_all_apps', function(Request $request, Response $response) use ($app){
+	if(!isset($_SESSION['username']) or $_SESSION['type']!=4) return $response->withRedirect('./');
+	$con = new Dbhandler();
+	$rec = $con->get_all_apps();
+	$this->view->render($response, "all_apps.php", ["rec" => $rec]);
+});
+
+$app->get('/view_all_users', function(Request $request, Response $response) use ($app){
+	if(!isset($_SESSION['username']) or $_SESSION['type']!=4) return $response->withRedirect('./');
+	$con = new Dbhandler();
+	$rec = $con->get_all_users();
+	$this->view->render($response, "view_users.php", ["rec" => $rec]);
+});
+
+
+$app->get('/user_details/{username}', function(Request $request, Response $response) use ($app){
+	if(!isset($_SESSION['username']) or $_SESSION['type']!=4) return $response->withRedirect('./');
+	$con = new Dbhandler();
+	$username = $request->getAttribute('username');
+	$rec = $con->get_user_details($username);
+	$bal = $con->getbalance($username);
+	$this->view->render($response, "view_user_info.php", ["rec" => $rec, "balance" => $bal]);
+});
+
+
+$app->post('/user_details/{username}/updatebasics', function(Request $request, Response $response) use ($app){
+	if(!isset($_SESSION['username']) or $_SESSION['type']!=4) return $response->withRedirect('./');
+	$con = new Dbhandler();
+	$username = $request->getAttribute('username');
+	$body = $request->getParams();
+	$con->change_name($body['name'], $username);
+	$con->change_type($body['type'], $username);
+	$con->change_notify($body['email_notify'], $username);
+	return $response->withRedirect('../'.$username);
+});
+
+$app->post('/user_details/{username}/updateleave', function(Request $request, Response $response) use ($app){
+	if(!isset($_SESSION['username']) or $_SESSION['type']!=4) return $response->withRedirect('./');
+	$con = new Dbhandler();
+	$username = $request->getAttribute('username');
+	$body = $request->getParams();
+	$con->change_leaves($body, $username);
+	return $response->withRedirect('../'.$username);
+});
 
 /*
 $app->get('/tickets', function (Request $request, Response $response) {
@@ -299,12 +360,6 @@ $app->get('/tickets', function (Request $request, Response $response) {
 Crack
 */
 
-/*
-Test Requests
-*/
 
-$app->get('/yo', function(Request $request, Response $response) use($app){
-	$this->mailer->notify_rec('Aditya', 'cse150001001@iiti.ac.in');
-});
-
+	
 $app->run();
