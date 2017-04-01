@@ -127,8 +127,8 @@ class Dbhandler{
 		return $result;
 	}
 
-	public function getbalance(){
-		$myself = $_SESSION['username'];
+	public function getbalance($myself){
+		//$myself = $_SESSION['username'];
 		$qry = "SELECT * from leave_balance WHERE username = '$myself'";
 		$result = mysqli_query($this->conn, $qry);
 		return $result;
@@ -198,6 +198,69 @@ class Dbhandler{
 		return $result;
 	}
 
+	public function getmydep($user){
+		$qry = "SELECT department from accounts where username = '$user'";
+		$result = mysqli_query($this->conn, $qry);
+		$arr = mysqli_fetch_assoc($result);
+		return $arr['department'];
+	}
+
+	public function get_recommenders($user){
+		$mydep = $this->getmydep($user);
+		$qry = "SELECT username, name from accounts where department = '$mydep' and username != '$user'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+
+	public function get_all_apps(){
+		$qry = "SELECT * from application";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+
+	public function get_all_users(){
+		$qry = "SELECT * from accounts";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+	public function get_user_details($username){
+		$qry = "SELECT * from accounts WHERE username = '$username'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+	public function change_type($type, $myself){
+		if($type != 'General User' and $type != 'Recommending Authority' and $type != 'Approving Authority' and $type != 'LPS Administrator') return;
+		if($type == 'General User') $type = 1;
+		else if($type == 'Recommending Authority') $type = 2;
+		else if($type == 'Approving Authority') $type = 3;
+		else if($type == 'LPS Administrator') $type = 4;
+		$qry = "UPDATE accounts SET type = $type WHERE username = '$myself'";
+		mysqli_query($this->conn, $qry);
+	}
+
+	public function change_name($name, $myself){
+		$qry = "UPDATE accounts SET name = '$name' WHERE username = '$myself'";
+		mysqli_query($this->conn, $qry);
+	}
+
+	public function change_notify($email_notify, $myself){
+		if($email_notify=="Enable"){
+			$qry = "UPDATE accounts SET notifications = 1 WHERE username = '$myself'";
+		}
+		else{
+			$qry = "UPDATE accounts SET notifications = 0 WHERE username = '$myself'";
+		}
+		mysqli_query($this->conn, $qry);
+	}
+
+	public function change_leaves($body, $username){
+		$el = $body['el'];
+		$cl = $body['cl'];
+		$hpl = $body['hpl'];
+		$vac = $body['vacation'];
+		$qry = "UPDATE leave_balance SET EL = $el, CL = $cl, HPL = $hpl, Vacation = $hpl WHERE username = '$username'";
+		mysqli_query($this->conn, $qry);
+	}
 }
 
 ?>
