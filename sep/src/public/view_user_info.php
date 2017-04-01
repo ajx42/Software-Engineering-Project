@@ -43,7 +43,7 @@
     <div id="wrapper">
 
         <!-- Navigation and Side bars-->
-        <?php include 'bars2.php' ?>
+        <?php include 'bars2_internal.php' ?>
         <?php $res = mysqli_fetch_assoc($rec);
               $bal = mysqli_fetch_assoc($balance); 
               $type;
@@ -70,7 +70,22 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <form role="form" action="../update_basics" method="post">
+                            <form role="form" action="./<?php echo $res['username']?>/updatebasics" method="post">
+                            <!--div class="row">
+                                <div class="col-lg-6">
+                                
+                                        <div class="form-group">
+                                            <label>Username</label>
+                                            <input class="form-control" name="name" value = "<?php echo $res['username']?>" readonly required>
+                                        </div>
+                                        
+                                
+                                </div>
+                                <div class="col-rg-6">
+                                <font color="red">Note: </font><br>
+                                Username can't be changed.
+                                </div>
+                            </div-->
                             <div class="row">
                                 <div class="col-lg-6">
                                 
@@ -107,9 +122,9 @@
                                 <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Email Notifications</label>
-                                            <select class="form-control" id="presuf3" name="notifications" >
+                                            <select class="form-control" id="presuf3" name="email_notify" >
                                                 <option <?php if($res['notifications'] == 1)  echo 'selected'  ?>>Enable </option>
-                                                <option <?php if($res['notifications'] == 2)  echo 'selected'  ?>>Disable</option>
+                                                <option <?php if($res['notifications'] == 0)  echo 'selected'  ?>>Disable</option>
                                                 
                                             </select>
                                         </div>
@@ -142,7 +157,7 @@
                             Leave Balance
                         </div>
                         <div class="panel-body">
-                            <form role="form" action="../leave_submit" method="post">
+                            <form role="form" action="./<?php echo $res['username']?>/updateleave" method="post">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
