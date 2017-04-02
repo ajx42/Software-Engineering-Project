@@ -67,8 +67,23 @@ $app->get('/', function(Request $request, Response $response) use ($app){
 // submit application form
 $app->post('/submit', function(Request $request, Response $response) use($app){
 	$body = $request->getParams();
-	$body['approving_auth']='aditya1304jain@gmail.com'; // todo: fetch approving authority name from db
+	//$body['approving_auth']='aditya1304jain@gmail.com'; // todo: fetch approving authority name from db
 	$con = new Dbhandler();
+	if($body['EL']=='Yes')
+	{
+		if($con->deduct_EL($_SESSION['username']))
+		{
+			$this->logger->info("EL deducted");
+		}
+		else
+		{
+			$this->logger->err('could not deduct EL');
+		}		
+	}
+	else
+	{
+		$this->logger->info("Do Not Encash");
+	}
 	if($con->insert_into_applications($body)){
 		$response->write('sucessfully submitted');
 		$this->mailer->notify_rec($con->getname($body['recommending_auth']),$body['recommending_auth']);
@@ -242,7 +257,9 @@ $app->get('/settings', function (Request $request, Response $response) use ($app
     //	$this->logger->info( $name . ": " . implode(", ", $values));
 	//}
 	//$this->logger->info("Joining Report Submitted : $errors");
-	$this->view->render($response, "settings.php");
+	$con = new Dbhandler();
+	$ret = $con->fetch_all_approvers();
+	$this->view->render($response, "settings.php", ["rec" => $ret]);
 });
 
 $app->post('/email_notify', function (Request $request, Response $response) use ($app){
@@ -257,6 +274,14 @@ $app->post('/change_password', function (Request $request, Response $response) u
 	$con = new Dbhandler();
 	$status = $con->change_password($body);
 	//$newResponse = $response->withHeader('Content-type', $status);
+	return $response->withRedirect('./settings');
+});
+
+$app->post('/forward', function (Request $request, Response $response) use ($app){
+	$body = $request->getParams();
+	$con = new Dbhandler();
+	if($body['to_forward'] == "Do not Forward") $body['to_forward'] = $_SESSION['username'];
+	$con->set_to_forward($_SESSION['username'], $body['to_forward']); 
 	return $response->withRedirect('./settings');
 });
 
@@ -291,8 +316,9 @@ $app->get('/apply', function(Request $request, Response $response) use ($app){
 	$con = new Dbhandler();
 	$rec = $con->get_recommenders($_SESSION['username']);
 	$dep = $con->getmydep($_SESSION['username']);
+	$apr = $con->get_fin_approver($con->getapprover($_SESSION['username']));
 	//$dep = $con->get_departments();
-	$this->view->render($response, "forms.php", ["rec" => $rec, "dep" => $dep]);
+	$this->view->render($response, "forms.php", ["rec" => $rec, "dep" => $dep, "appr" => $apr]);
 });
 
 $app->get('/admin', function(Request $request, Response $response) use ($app){
@@ -360,6 +386,19 @@ $app->get('/tickets', function (Request $request, Response $response) {
 Crack
 */
 
+
+
+$app->get('/yo', function(Request $request, Response $response) use($app){
+	$this->mailer->notify_rec('Aditya', 'cse150001001@iiti.ac.in');
+});
+
+
+
+$app->get('/fun', function(Request $request, Response $response) use($app){
+	$param = "Why is everything so heavy?";
+
+	return $response->withRedirect('https://www.youtube.com/watch?v=FM7MFYoylVs');
+});
 
 	
 $app->run();
