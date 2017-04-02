@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>IITI LPS</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -84,7 +84,10 @@
                                         <td>Vacation: </td>
                                         <td> <?php echo $rec['Vacation']; ?> </td> 
                                     </tr>
-                                        
+                                    <tr>
+                                        <td>EL: </td>
+                                        <td> <?php echo $rec['EL']; ?> </td> 
+                                    </tr>
                                     
                                     
                                 </tbody>
