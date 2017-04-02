@@ -40,7 +40,7 @@ class Dbhandler{
 		$recommending_auth = $res['recommending_auth'];
 		
 		///// Approving Authority name to be decided automatically
-		$approving_auth = 'aditya1304jain@gmail.com';
+		$approving_auth = $this->get_fin_approver($res['approving_auth']);
 		
 		$cur_date = $res['cur_date'];
 		if($prefix_holidays==NULL) $prefix_holidays = 'NULL';
@@ -106,6 +106,17 @@ class Dbhandler{
 	public function approve_app($app_id, $comment){
 		$qry = "UPDATE application SET status = 'Approved', approver_comments = '$comment' WHERE application_id = $app_id";
 		$result = mysqli_query($this->conn, $qry);
+		$qry = "SELECT * from application where application_id = $app_id";
+		$result = mysqli_query($this->conn, $qry);
+		$rec = mysqli_fetch_assoc($result);
+		if($rec['nature'] == "CL"){
+			$usr = $rec['username'];
+			$to_date = new DateTime($rec['period_to']);
+			$from_date = new DateTime($rec['period_from']);
+			$number_of_days = $to_date->diff($from_date)->format("%a")+1;;
+			$qry = "UPDATE leave_balance SET CL = CL - $number_of_days WHERE username = '$usr'";
+			mysqli_query($this->conn, $qry);
+		}
 	}
 
 	public function reject_apr_app($app_id, $comment){
@@ -228,14 +239,32 @@ class Dbhandler{
 		$result = mysqli_query($this->conn, $qry);
 		return $result;
 	}
+	public function getusertype($user){
+		$qry = "SELECT * from accounts where username = '$user'";
+		$result = mysqli_query($this->conn, $qry);
+		$rec = mysqli_fetch_assoc($result);
+		return $rec['type'];
+	}
 	public function change_type($type, $myself){
 		if($type != 'General User' and $type != 'Recommending Authority' and $type != 'Approving Authority' and $type != 'LPS Administrator') return;
+		if($this->getusertype($myself) == $type) return;
+		if($this->getusertype($myself) == 3){
+			$qry = "UPDATE forward_approving_auth SET forwarded_to = forward_approving_auth.username WHERE forwarded_to = '$myself'";
+			mysqli_query($this->conn, $qry);
+			$qry = "DELETE FROM forward_approving_auth WHERE username = '$myself'";
+			mysqli_query($this->conn, $qry);
+		}
 		if($type == 'General User') $type = 1;
 		else if($type == 'Recommending Authority') $type = 2;
 		else if($type == 'Approving Authority') $type = 3;
 		else if($type == 'LPS Administrator') $type = 4;
+		$fdsa =  $this->getusertype($myself)*4;
 		$qry = "UPDATE accounts SET type = $type WHERE username = '$myself'";
 		mysqli_query($this->conn, $qry);
+		if($type == 3){
+			$qry = "INSERT into forward_approving_auth values('$myself', '$myself')";
+			mysqli_query($this->conn, $qry);
+		}
 	}
 
 	public function change_name($name, $myself){
@@ -260,6 +289,47 @@ class Dbhandler{
 		$vac = $body['vacation'];
 		$qry = "UPDATE leave_balance SET EL = $el, CL = $cl, HPL = $hpl, Vacation = $hpl WHERE username = '$username'";
 		mysqli_query($this->conn, $qry);
+	}
+
+	public function get_fin_approver($appr){
+		$iter = 0;
+		while(1){
+			$iter += 1;
+			$qry = "SELECT * from forward_approving_auth WHERE username = '$appr'";
+			$res = mysqli_query($this->conn, $qry);
+			$rec = mysqli_fetch_assoc($res);
+			if($rec['username'] == $rec['forwarded_to']) return $appr;
+			$appr = $rec['forwarded_to'];
+			
+			if($iter > 1000000) return $appr; // to save the system from a possible infinite loop 
+			
+		}
+	}
+
+	public function getapprover($user){
+		$qry = "SELECT * from accounts where username = '$user'";
+		$result = mysqli_query($this->conn, $qry);
+		$rec = mysqli_fetch_assoc($result);
+		return $rec['approving_authority'];
+	}
+
+	public function fetch_all_approvers(){
+		$qry = "SELECT accounts.username as username, accounts.name as name from accounts INNER JOIN forward_approving_auth ON accounts.username = forward_approving_auth.username";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+
+	public function set_to_forward($myself, $to){
+		$qry = "UPDATE forward_approving_auth SET forwarded_to = '$to' WHERE username = '$myself'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+
+
+	public function deduct_EL($user){
+		$qry="UPDATE leave_balance set EL=EL-10 where username='$user'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
 	}
 }
 
