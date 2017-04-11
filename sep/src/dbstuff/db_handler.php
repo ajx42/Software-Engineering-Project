@@ -27,8 +27,9 @@ class Dbhandler{
 	}
 	public function insert_new_mews($res){
 		$news=$res['news'];
+		$heading = $res['heading'];
 		$date=	date("Y/m/d");
-		$qry = "INSERT into add_news(news,dates) values('$news','$date' )";
+		$qry = "INSERT into add_news(heading, news, date) values('$heading', '$news','$date' )";
 		if($result = mysqli_query($this->conn, $qry)){
 			return 1;
 		}
