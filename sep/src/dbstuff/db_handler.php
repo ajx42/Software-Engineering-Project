@@ -9,12 +9,15 @@ class Dbhandler{
 	}
 	public function authenticate($username, $password){
 		$pass_md5=md5($password);
-		$qry = "SELECT * from accounts where username = '$username'and password = '$pass_md5' ";
+		$qry = "SELECT * from accounts where username = '$username'";
 		$response = 0;
 		if($result = mysqli_query($this->conn, $qry)){
 			if(mysqli_num_rows($result)>0){
         		$row = mysqli_fetch_assoc($result);
-        		$response = $row['type'];
+        		if($pass_md5 == md5($row['password'])){
+        			$response = $row['type'];
+        		}
+        		
         	}
 		}
 		else{
@@ -72,7 +75,7 @@ class Dbhandler{
 	}
 	//display news
 	public function display_news(){
-		$qry = "SELECT * from add_news ";
+		$qry = "SELECT * from add_news order by date desc";
 		$result = mysqli_query($this->conn, $qry);
 		return $result;
 		
