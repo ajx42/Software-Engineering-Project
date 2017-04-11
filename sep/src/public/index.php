@@ -30,7 +30,7 @@ $container['logger'] = function($c) {
 };
 
 //login
-$app->post('/articles', function(Request $request, Response $response) use($app) {
+$app->post('/articles',function(Request $request, Response $response) use($app) {
 
     $body = $request->getParams(); 
 	/*
@@ -50,7 +50,7 @@ $app->post('/articles', function(Request $request, Response $response) use($app)
 		if($check == 4){
 			return $response->withRedirect('./admin');
 		}
-		else return $response->withRedirect('./user.php');
+		else return $response->withRedirect('./dashboard');
 	}
 	else{
 		return $response->withRedirect('./login.html');
@@ -88,13 +88,13 @@ $app->post('/submit', function(Request $request, Response $response) use($app){
 		$response->write('sucessfully submitted');
 		$this->mailer->notify_rec($con->getname($body['recommending_auth']),$body['recommending_auth']);
 		$this->mailer->notify_apr($con->getname($body['approving_auth']),$body['approving_auth']);
-		return $response->withRedirect('./user.php');
+		return $response->withRedirect('./dashboard');
 
 	}
 	else{
 		$this->logger->err('mysqli error');
 		$response->write('failed');
-		return $response->withRedirect('./user.php');
+		return $response->withRedirect('./dashboard');
 	}
 });
 
@@ -102,7 +102,7 @@ $app->post('/submit', function(Request $request, Response $response) use($app){
 $app->get('/view_rec', function(Request $request, Response $response) use ($app){
 	if($_SESSION['type']!=2){
 		$this->logger->err('invalid view request');
-		return $response->withRedirect('./user.php');
+		return $response->withRedirect('./dashboard');
 	}
 	$user = $_SESSION['username'];
 	$this->logger->info("view request accepted : $user");
@@ -121,7 +121,7 @@ $app->get('/view_rec/{app_id}',  function(Request $request, Response $response) 
 	$arr = mysqli_fetch_assoc($res);
 	if($arr['recommending_auth']!=$_SESSION['username']){
 		$this->logger->err("invalid app rec view request");
-		return $response->withRedirect('../user.php');
+		return $response->withRedirect('../dashboard');
 	}
 	$this->logger->info('app rec view request accepted');
 	$data = array('app_id' => $app_id);	
@@ -154,7 +154,7 @@ $app->post('/reject_app/{app_id}', function(Request $request, Response $response
 $app->get('/view_apr', function(Request $request, Response $response) use ($app){
 	if($_SESSION['type']!=3){
 		$this->logger->err('invalid view request');
-		return $response->withRedirect('./user.php');
+		return $response->withRedirect('./dashboard');
 	}
 	$user = $_SESSION['username'];
 	$this->logger->info("view request accepted : $user");
@@ -173,7 +173,7 @@ $app->get('/view_apr/{app_id}',  function(Request $request, Response $response) 
 	$arr = mysqli_fetch_assoc($res);
 	if($arr['approving_auth']!=$_SESSION['username']){
 		$this->logger->err("invalid app apr view request");
-		return $response->withRedirect('../user.php');
+		return $response->withRedirect('../dashboard');
 	}
 	$this->logger->info('app apr view request accepted');
 	$data = array('app_id' => $app_id);	
@@ -238,7 +238,51 @@ $app->get('/join', function (Request $request, Response $response) use ($app){
 	$arr['name'] = $_SESSION['myname'];
 	$this->view->render($response, "joining_report.php", ["rec" => $arr]);
 });
-
+//add new account holder- form
+$app->get('/add_new_account_holder', function (Request $request, Response $response) use ($app){
+	$this->view->render($response, "add_new_account.php");
+});
+//add_news
+$app->get('/add_news', function (Request $request, Response $response) use ($app){
+	$this->view->render($response, "add_site_news.php");
+});
+//dashboard
+$app->get('/dashboard', function (Request $request, Response $response) use ($app){
+	
+	$con = new Dbhandler();
+	$ret = $con->display_news();
+	//return $response->withRedirect('./dashboard');
+	$this->view->render($response, "display_news.php", ["ret" => $ret]);
+	
+});
+/*
+$app->get('/view_all_users', function(Request $request, Response $response) use ($app){
+	if(!isset($_SESSION['username']) or $_SESSION['type']!=4) return $response->withRedirect('./');
+	$con = new Dbhandler();
+	$rec = $con->get_all_users();
+	$this->view->render($response, "view_users.php", ["rec" => $rec]);
+});
+*/
+//submit new news
+$app->post('/submit_add_new_member', function (Request $request, Response $response) use ($app){
+	$body = $request->getParams();
+	$this->logger->info("new member added successfully : $user");
+	$con = new Dbhandler();
+	$status = $con->insert_new_member($body);
+	//$this->mailer->join_notify($status);	
+	//$this->logger->info($con->joining($body));
+	return $response->withRedirect('./admin');
+});
+//submit_news
+$app->post('/submit_news', function (Request $request, Response $response) use ($app){
+	$body = $request->getParams();
+	$this->logger->info("new news added successfully : $user");
+	$con = new Dbhandler();
+	$status = $con->insert_new_mews($body);
+	//$this->mailer->join_notify($status);	
+	//$this->logger->info($con->joining($body));
+	return $response->withRedirect('./admin');
+});
 // Post Joining Report Information
 $app->post('/submit_join', function (Request $request, Response $response) use ($app){
 	$body = $request->getParams();
@@ -247,7 +291,7 @@ $app->post('/submit_join', function (Request $request, Response $response) use (
 	$status = $con->joining($body);
 	$this->mailer->join_notify($status);	
 	//$this->logger->info($con->joining($body));
-	return $response->withRedirect('./user.php');
+	return $response->withRedirect('./dashboard');
 });
 
 $app->get('/settings', function (Request $request, Response $response) use ($app){
@@ -259,8 +303,28 @@ $app->get('/settings', function (Request $request, Response $response) use ($app
 	//$this->logger->info("Joining Report Submitted : $errors");
 	$con = new Dbhandler();
 	$ret = $con->fetch_all_approvers();
-	$this->view->render($response, "settings.php", ["rec" => $ret]);
+	if($_SESSION['type']==4)
+	{
+       $this->view->render($response, "adminsettings.php", ["rec" => $ret]);
+	}
+	else
+	{
+		$this->view->render($response, "settings.php", ["rec" => $ret]);
+	}
+	
 });
+/*$app->get('/add_new_account_holder', function (Request $request, Response $response) use ($app){
+	//$error = $request->getHeader('status');
+	//$headers = $request->getHeaders();
+	//foreach ($headers as $name => $values) {
+    //	$this->logger->info( $name . ": " . implode(", ", $values));
+	//}
+	//$this->logger->info("Joining Report Submitted : $errors");
+	/*$con = new Dbhandler();
+	$ret = $con->fetch_all_approvers();
+	//$this->view->render($response, "add_new_account_holder.php", ["rec" => $ret]);
+	
+});*/
 
 $app->post('/email_notify', function (Request $request, Response $response) use ($app){
 	$body = $request->getParams();
@@ -288,7 +352,7 @@ $app->post('/forward', function (Request $request, Response $response) use ($app
 $app->get('/pending_approvals', function(Request $request, Response $response) use ($app){
 	if($_SESSION['type']!=3){
 		$this->logger->err('invalid view request');
-		return $response->withRedirect('./user.php');
+		return $response->withRedirect('./dashboard');
 	}
 	$user = $_SESSION['username'];
 	$this->logger->info("view request accepted : $user");
@@ -301,7 +365,7 @@ $app->get('/pending_approvals', function(Request $request, Response $response) u
 $app->get('/pending_recommendations', function(Request $request, Response $response) use ($app){
 	if($_SESSION['type']!=2){
 		$this->logger->err('invalid view request');
-		return $response->withRedirect('./user.php');
+		return $response->withRedirect('./dashboard');
 	}
 	$user = $_SESSION['username'];
 	$this->logger->info("view request accepted : $user");
