@@ -386,8 +386,12 @@ $app->get('/apply', function(Request $request, Response $response) use ($app){
 });
 
 $app->get('/admin', function(Request $request, Response $response) use ($app){
+	$con = new Dbhandler();
+	$ret = $con->display_news();
+	//return $response->withRedirect('./dashboard');
+	//$this->view->render($response, "display_news.php", ["ret" => $ret]);
 	if(!isset($_SESSION['username'])) return $response->withRedirect('./');
-	$this->view->render($response, "admin.php"/*, ["rec" => $rec, "dep" => $dep]*/);
+	$this->view->render($response, "admin.php", ["ret" => $ret]);
 });
 
 $app->get('/view_all_apps', function(Request $request, Response $response) use ($app){
