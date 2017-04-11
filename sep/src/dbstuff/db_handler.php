@@ -8,7 +8,8 @@ class Dbhandler{
 		$this->conn = $db->connect();
 	}
 	public function authenticate($username, $password){
-		$qry = "SELECT * from accounts where username = '$username' and password = '$password'";
+		$pass_md5=md5($password);
+		$qry = "SELECT * from accounts where username = '$username'and password = '$pass_md5' ";
 		$response = 0;
 		if($result = mysqli_query($this->conn, $qry)){
 			if(mysqli_num_rows($result)>0){
@@ -21,6 +22,19 @@ class Dbhandler{
 		}
         return $response;
 	}
+	public function insert_new_mews($res){
+		$news=$res['news'];
+		$date=	date("Y/m/d");
+		$qry = "INSERT into add_news(news,dates) values('$news','$date' )";
+		if($result = mysqli_query($this->conn, $qry)){
+			return 1;
+		}
+		else{
+			echo mysqli_error($this->conn);
+			return 0;
+		}
+	}
+
 	public function insert_into_applications($res){
 
 		$username = $_SESSION['username'];
@@ -48,6 +62,30 @@ class Dbhandler{
 		if($LTC==NULL) $LTC = 'NULL';
 		
 		$qry = "INSERT into application(username,name,nature,designation,department,period_from,period_to,prefix_holidays,sufix_holidays,LTC,address,contact,status,recommending_auth,approving_auth,cur_date) values('$username', '$name', '$nature', '$designation', '$department','$period_from', '$period_to', $prefix_holidays, $sufix_holidays, '$LTC', '$address', '$contact', '$status', '$recommending_auth', '$approving_auth', '$cur_date' )";
+		if($result = mysqli_query($this->conn, $qry)){
+			return 1;
+		}
+		else{
+			echo mysqli_error($this->conn);
+			return 0;
+		}
+	}
+	//display news
+	public function display_news(){
+		$qry = "SELECT * from add_news ";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+		
+	}
+	//insert new member
+	public function insert_new_member($res){
+		$username=$res['username'];
+		$cl=$res['cl'];
+		$hpl=$res['hpl'];
+		$vacation=$res['vacation'];
+		$el=$res['el'];		
+		$qry = "INSERT into leave_balance(username,CL,HPL,Vacation,el) values('$username',
+		                    '$cl','$hpl','$vacation','$el' )";
 		if($result = mysqli_query($this->conn, $qry)){
 			return 1;
 		}
@@ -188,7 +226,8 @@ class Dbhandler{
 			return 0;
 		}
 		$new_pass = $body['new_pass'];
-		$qry = "UPDATE accounts SET password = '$new_pass' WHERE username = '$myself'";
+		$new_pass_md5=md5($body['new_pass']);
+		$qry = "UPDATE accounts SET password = '$new_pass_md5' WHERE username = '$myself'";
 		if(mysqli_query($this->conn, $qry)){
 			return 1;
 		}
@@ -244,6 +283,8 @@ class Dbhandler{
 		$result = mysqli_query($this->conn, $qry);
 		$rec = mysqli_fetch_assoc($result);
 		return $rec['type'];
+
+
 	}
 	public function change_type($type, $myself){
 		if($type != 'General User' and $type != 'Recommending Authority' and $type != 'Approving Authority' and $type != 'LPS Administrator') return;
