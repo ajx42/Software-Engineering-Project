@@ -1,8 +1,29 @@
 <?php
 session_start();
 ?>
-<html>
+
 <head>
+<!--script>
+    function disabling()
+    {
+        if(document.getElementById("type_of_leave").value==="CL"){
+            document.getElementById("presuf1").value = 0;
+            document.getElementById("presuf2").value = 0;
+            document.getElementById("presuf3").value = "No";
+            document.getElementById("presuf1").disabled='false';
+            document.getElementById("presuf2").disabled='false';
+            document.getElementById("presuf3").disabled='false';
+            
+        }
+        else{
+            
+            document.getElementById("presuf1").removeAttribute('disabled');
+            document.getElementById("presuf2").removeAttribute('disabled');
+            document.getElementById("presuf3").removeAttribute('disabled');
+        }
+        
+    }
+</script-->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -90,6 +111,22 @@ session_start();
                                                 <option>Other</option>
                                             </select>
                                         </div>
+                                        
+                                        <!--div class="form-group">
+                                            <label>Recommending Authority</label>
+                                            <select class="form-control" name="recommending_auth" required>
+
+                                                <option>cse150001001@iiti.ac.in</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                            </select>
+                                        </div-->
+                                        
+                                        
+                                        
+                                    
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
                                 <div class="col-lg-6">
@@ -103,7 +140,7 @@ session_start();
                                             
                                             <div class="form-group">
                                                 <label>Report to duty with effect from: </label>
-                                                <select class="form-control" name="recommending_auth" required>
+                                                <select class="form-control" name="report_from" required>
 
                                                 <option>Forenoon</option>
                                                 <option>Afternoon</option>
