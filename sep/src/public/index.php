@@ -29,6 +29,17 @@ $container['logger'] = function($c) {
     return $logger;
 };
 
+// notFoundHandling
+$container['notFoundHandler'] = function ($container) {
+    return function ($request, $response) use ($container) {
+        return $container['response']
+            ->withStatus(404)
+            ->withHeader('Content-Type', 'text/html')
+            ->write('<h1> Error 404 - Page not found </h1>');
+    };
+};
+
+
 //login
 $app->post('/articles',function(Request $request, Response $response) use($app) {
 
@@ -118,6 +129,7 @@ $app->get('/view_rec/{app_id}',  function(Request $request, Response $response) 
 	$con = new Dbhandler();
 	$app_id = (int)$app_id;
 	$res = $con->fetchapp($app_id);
+	if(mysqli_num_rows($res)==0){throw new \Slim\Exception\NotFoundException($request, $response);}
 	$arr = mysqli_fetch_assoc($res);
 	if($arr['recommending_auth']!=$_SESSION['username']){
 		$this->logger->err("invalid app rec view request");
@@ -170,6 +182,7 @@ $app->get('/view_apr/{app_id}',  function(Request $request, Response $response) 
 	$con = new Dbhandler();
 	$app_id = (int)$app_id;
 	$res = $con->fetchapp($app_id);
+	if(mysqli_num_rows($res)==0){throw new \Slim\Exception\NotFoundException($request, $response);}
 	$arr = mysqli_fetch_assoc($res);
 	if($arr['approving_auth']!=$_SESSION['username']){
 		$this->logger->err("invalid app apr view request");
@@ -218,6 +231,7 @@ $app->get('/my_leaves/{app_id}', function(Request $request, Response $response) 
 	$this->logger->info("view request accepted : $user");
 	$con = new Dbhandler();
 	$res = $con->getthatapp($app_id);
+	if(mysqli_num_rows($res)==0){throw new \Slim\Exception\NotFoundException($request, $response);}
 	$arr = mysqli_fetch_assoc($res);
 	$this->logger->info(mysqli_num_rows($res));
 	$this->view->render($response, "view_app.php", ["rec" => $arr]);
@@ -414,6 +428,7 @@ $app->get('/user_details/{username}', function(Request $request, Response $respo
 	$con = new Dbhandler();
 	$username = $request->getAttribute('username');
 	$rec = $con->get_user_details($username);
+	if(mysqli_num_rows($rec)==0){throw new \Slim\Exception\NotFoundException($request, $response);}
 	$bal = $con->getbalance($username);
 	$this->view->render($response, "view_user_info.php", ["rec" => $rec, "balance" => $bal]);
 });
@@ -454,19 +469,6 @@ $app->get('/tickets', function (Request $request, Response $response) {
 Crack
 */
 
-
-
-$app->get('/yo', function(Request $request, Response $response) use($app){
-	$this->mailer->notify_rec('Aditya', 'cse150001001@iiti.ac.in');
-});
-
-
-
-$app->get('/fun', function(Request $request, Response $response) use($app){
-	$param = "Why is everything so heavy?";
-
-	return $response->withRedirect('https://www.youtube.com/watch?v=FM7MFYoylVs');
-});
 
 	
 $app->run();
