@@ -191,7 +191,15 @@ class Dbhandler{
 		$myself = $_SESSION['username'];
 		$from_date =  new DateTime($details['period_from']);
 		$to_date = new DateTime($details['period_to']);
+		$nature = $details['nature'];
+		$report_from = $details['report_from'];
 		$number_of_days = $to_date->diff($from_date)->format("%a")+1;;
+				$from = $details['period_from'];
+		$to = $details['period_to'];
+		$cur_date = date("Y-m-d");
+		$pec = "INSERT into Joining_Reports(Username,Nature,Period_From,Period_To,Report_From,Date) values('$myself', '$nature', '$from', '$to', '$report_from', '$cur_date')";
+		mysqli_query($this->conn, $pec);
+		
 		if($details['nature'] == "HPL"){
 			$qry = "UPDATE leave_balance SET HPL = HPL - 2*$number_of_days WHERE username = '$myself'";
 		}
