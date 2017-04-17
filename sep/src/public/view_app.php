@@ -165,7 +165,7 @@
                 <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a class="btn btn-default btn-md btn-block"  href="../my_leaves"><b>Back</b></a>
+                            <a class="btn btn-default btn-md btn-block"  href="../<?php if($_SESSION['type']==4) echo 'view_all_apps'; else echo 'my_leaves'?>"><b>Back</b></a>
                         </div>
                         
                     </div>
@@ -178,7 +178,20 @@
                 </div>
                 </div>
 
-            
+            <!--
+            <table>
+                <tr>
+                    <th> Field </th>
+                    <th> Data </th>
+                </tr>
+                <tr>
+                    <td> <b> Application </b> </td>
+                    <td>  </td>
+                </tr>
+            </table>
+            <!--
+            <b> Applicati
+        -->
 
     
 
