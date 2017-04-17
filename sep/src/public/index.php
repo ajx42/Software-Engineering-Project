@@ -454,6 +454,13 @@ $app->post('/user_details/{username}/updateleave', function(Request $request, Re
 	return $response->withRedirect('../'.$username);
 });
 
+$app->get('/view-all-joining', function(Request $request, Response $response) use ($app){
+	if(!isset($_SESSION['username']) or $_SESSION['type']!=4) return $response->withRedirect('./');
+	$con = new Dbhandler();
+	$rec = $con->get_all_joining_reports();
+	$this->view->render($response, "all_joining.php", ["rec" => $rec]);
+});
+
 /*
 $app->get('/tickets', function (Request $request, Response $response) {
     $this->logger->addInfo("Ticket list");
@@ -469,6 +476,19 @@ $app->get('/tickets', function (Request $request, Response $response) {
 Crack
 */
 
+
+
+$app->get('/yo', function(Request $request, Response $response) use($app){
+	$this->mailer->notify_rec('Aditya', 'cse150001001@iiti.ac.in');
+});
+
+
+
+$app->get('/fun', function(Request $request, Response $response) use($app){
+	$param = "Why is everything so heavy?";
+
+	return $response->withRedirect('https://www.youtube.com/watch?v=FM7MFYoylVs');
+});
 
 	
 $app->run();
