@@ -92,7 +92,8 @@
                                             echo "danger";
                                         }
                                     ?> >
-                                        <td><a href = "./view_application<?php echo $res['application_id']; ?>"><?php echo $res['application_id']?> </a></td>
+                                    <?//php echo $res['application_id']; ?>
+                                        <td><a href = "./view-application/<?php echo $res['application_id']?>"><?php echo $res['application_id']?> </a></td>
                                         <td><?php echo $res['name'] ?></td>
                                         <td><?php echo $res['nature'] ?></td>
                                         <td><?php echo $res['designation'] ?></td>
