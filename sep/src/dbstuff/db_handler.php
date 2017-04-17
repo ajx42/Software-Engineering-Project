@@ -384,6 +384,12 @@ class Dbhandler{
 		$result = mysqli_query($this->conn, $qry);
 		return $result;
 	}
+
+	public function get_all_joining_reports(){
+		$qry="SELECT * FROM Joining_Reports";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
 }
 
 ?>
