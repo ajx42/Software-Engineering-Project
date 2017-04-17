@@ -65,6 +65,16 @@
                         <li>
                             <a href="../view_all_users"><i class="fa fa-edit fa-fw"></i> All Users</a>
                         </li>
+                        <li>
+                          <a href="../settings"><i class="fa fa-wrench fa-fw"></i> Account Settings</a>
+                        </li>
+                        <li>
+                          <a href="../add_new_account_holder"><i class="fa fa-wrench fa-fw"></i> Add new acount holder</a>
+                        </li>
+                         <li>
+                            <a href="../view-all-joining"><i class="fa fa-edit fa-fw"></i> All Joining Reports</a>
+                        </li>
+                       
                         
                     </ul>
                 </div>
