@@ -43,7 +43,7 @@
     <div id="wrapper">
 
         <!-- Navigation and Side bars-->
-        <?php include 'bars_internal.php' ?>
+        <?php if($_SESSION['type'] == 4) include 'bars2_internal.php'; else include 'bars_internal.php'; ?>
         <div id="page-wrapper">
             <!-- add content here -->
             <div class="row">
@@ -178,20 +178,7 @@
                 </div>
                 </div>
 
-            <!--
-            <table>
-                <tr>
-                    <th> Field </th>
-                    <th> Data </th>
-                </tr>
-                <tr>
-                    <td> <b> Application </b> </td>
-                    <td>  </td>
-                </tr>
-            </table>
-            <!--
-            <b> Applicati
-        -->
+            
 
     
 
@@ -206,7 +193,7 @@
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../../vendor/metisMenu/metisMenu.min.js"></script>
 
-
+    
 
     <!-- Custom Theme JavaScript -->
     <script src="../../dist/js/sb-admin-2.js"></script>
