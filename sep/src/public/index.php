@@ -461,6 +461,19 @@ $app->get('/view-all-joining', function(Request $request, Response $response) us
 	$this->view->render($response, "all_joining.php", ["rec" => $rec]);
 });
 
+
+$app->get('/view-application/{app_id}', function(Request $request, Response $response) use ($app){
+	//$user = $_SESSION['username'];
+	$app_id = $request->getAttribute('app_id');
+	//$this->logger->info("view request accepted : $user");
+	$con = new Dbhandler();
+	$res = $con->getthatappforadmin($app_id);
+	if(mysqli_num_rows($res)==0){throw new \Slim\Exception\NotFoundException($request, $response);}
+	$arr = mysqli_fetch_assoc($res);
+	$this->logger->info(mysqli_num_rows($res));
+	$this->view->render($response, "view_app.php", ["rec" => $arr]);
+});
+
 /*
 $app->get('/tickets', function (Request $request, Response $response) {
     $this->logger->addInfo("Ticket list");
