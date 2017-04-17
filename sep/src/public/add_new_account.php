@@ -50,33 +50,47 @@ session_start();
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                           Fill Joining Report
+                           Enter details of new account holder
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <form role="form" action="./submit_add_new_member" method="post">
                                         <div class="form-group">
-                                            <label>Username</label>
+                                            <label>Email-id / Username</label>
                                             <input class="form-control" name="username" required>
                                         </div>
-
-
                                         <div class="form-group">
-                                            <label>CL</label>
+                                            <label>Name</label>
+                                            <input class="form-control" name="name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Type of Account</label>
+                                            <input class="form-control" name="type" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Department</label>
+                                            <input class="form-control" name="department" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Approving Authority</label>
+                                            <input class="form-control" name="approving" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Preliminary CL</label>
                                             <input class="form-control" name="cl" required>
                                         </div>
                                         
                                         <div class="form-group">
-                                            <label>HPL</label>
+                                            <label>Preliminary HPL</label>
                                             <input class="form-control" name="hpl" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>Vacation</label>
+                                            <label>Preliminary Vacation</label>
                                             <input class="form-control" name="vacation" required>
                                         </div>
                                         <div class="form-group">
-                                            <label>EL</label>
+                                            <label>Preliminary EL</label>
                                             <input class="form-control" name="el" required>
                                         </div>
                                         <!--div class="form-group">
