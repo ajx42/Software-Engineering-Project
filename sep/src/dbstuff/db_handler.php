@@ -180,6 +180,14 @@ class Dbhandler{
 		return $result;
 	}
 
+	public function getthatappforadmin($app_id){
+		$myself = $_SESSION['username'];
+		if($_SESSION['type']!=4) return $result;
+		$qry = "SELECT * from application WHERE application_id = $app_id";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+
 	public function getbalance($myself){
 		//$myself = $_SESSION['username'];
 		$qry = "SELECT * from leave_balance WHERE username = '$myself'";
