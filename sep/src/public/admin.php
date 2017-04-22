@@ -73,23 +73,10 @@
                                       <tr>
                                        <?php
                                             echo $rec['news']."<br>";
-                                          
-                                       /* session_start();
-                                        $con = new Dbhandler();
-                                        $ret = $con->display_news();
-                                        $session['news']=$ret[0];
-                                        $session['date']=$ret['date'];
-                                        echo $ret['news'][0];
-                                        foreach($ret as $value )
-                                           {
-                                               echo "
-                                                      <td>
-                                                          $value
-                                                      </td>
-                                                    ";
-                                           }*/
                                        ?>
                                       </tr>
+                                      <br> <br>
+                                      <tr><a href = "./remove-news/<?php echo $rec['id']; ?>"><?php echo 'DELETE'?> </a></tr>
                                     </table>
                                 </div>
                                 
