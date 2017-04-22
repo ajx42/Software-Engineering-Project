@@ -218,6 +218,9 @@ class Dbhandler{
 		else if($details['nature'] == "CL"){
 			$qry = "UPDATE leave_balance SET CL = CL - $number_of_days WHERE username = '$myself'";
 		}
+		else if($details['nature'] == "EL"){
+			$qry = "UPDATE leave_balance SET EL = EL - $number_of_days WHERE username = '$myself'";
+		}
 		else if($details['nature'] == "Vacation"){
 			$qry = "UPDATE leave_balance SET Vacation = Vacation - $number_of_days WHERE username = '$myself'";
 		}
@@ -413,14 +416,15 @@ class Dbhandler{
 		$qry="SELECT * FROM application WHERE username = '$user' and application_id = '$app_id' and nature != 'CL' and status = 'Approved' and joining_report = 0";
 		$result = mysqli_query($this->conn, $qry);
 		$ok = 1;
-		//if(mysqli_num_rows($result) == 0) $ok = 0;
 		$rec = mysqli_fetch_assoc($result);
 		$to_date = new DateTime();
 		$from_date = new DateTime($rec['period_from']);
-
-		//$number_of_days = $to_date->diff($from_date)->format("%a")+1;;
-		//if($to_date < $from_date) $ok = 0;
 		return $ok;	
+	}
+
+	public function remove_news($news_id){
+		$qry = "DELETE FROM add_news WHERE id= $news_id";
+		mysqli_query($this->conn, $qry);
 	}
 }
 
