@@ -247,11 +247,37 @@ $app->get('/balance', function (Request $request, Response $response) use ($app)
 });
 
 // View for Joining Report - Form
-$app->get('/join', function (Request $request, Response $response) use ($app){
+/*$app->get('/join', function (Request $request, Response $response) use ($app){
 	$arr['user'] = $_SESSION['username'];
 	$arr['name'] = $_SESSION['myname'];
 	$this->view->render($response, "joining_report.php", ["rec" => $arr]);
+});*/
+
+
+$app->get('/join', function (Request $request, Response $response) use ($app){
+	//$arr['user'] = $_SESSION['username'];
+	//$arr['name'] = $_SESSION['myname'];
+	$con = new Dbhandler();
+	$user = $_SESSION['username'];
+	$res = $con->get_pending_joining($user);
+	$this->view->render($response, "pending_joining.php", ["rec" => $res]);
 });
+
+$app->get('/fill-joining-report/{app_id}', function (Request $request, Response $response) use ($app){
+	//$arr['user'] = $_SESSION['username'];
+	//$arr['name'] = $_SESSION['myname'];
+	$app_id = $request->getAttribute('app_id');
+	$con = new Dbhandler();
+	$valid = $con->validate_for_joining_report($app_id, $user);
+	if(!$valid) throw new \Slim\Exception\NotFoundException($request, $response);
+	$arr['id'] = $app_id;
+	$arr['user'] = $_SESSION['username'];
+	$arr['name'] = $_SESSION['myname'];
+	$res = $con->fetchapp($app_id);
+	$rec = mysqli_fetch_assoc($res);
+	$this->view->render($response, "joining_report.php", ["rec" => $rec]);
+});
+
 //add new account holder- form
 $app->get('/add_new_account_holder', function (Request $request, Response $response) use ($app){
 	$this->view->render($response, "add_new_account.php");
