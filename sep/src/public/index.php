@@ -251,9 +251,8 @@ $app->get('/balance', function (Request $request, Response $response) use ($app)
 	$arr['user'] = $_SESSION['username'];
 	$arr['name'] = $_SESSION['myname'];
 	$this->view->render($response, "joining_report.php", ["rec" => $arr]);
-});*/
-
-
+});
+*/
 $app->get('/join', function (Request $request, Response $response) use ($app){
 	//$arr['user'] = $_SESSION['username'];
 	//$arr['name'] = $_SESSION['myname'];
@@ -278,6 +277,7 @@ $app->get('/fill-joining-report/{app_id}', function (Request $request, Response 
 	$this->view->render($response, "joining_report.php", ["rec" => $rec]);
 });
 
+
 //add new account holder- form
 $app->get('/add_new_account_holder', function (Request $request, Response $response) use ($app){
 	$this->view->render($response, "add_new_account.php");
@@ -288,7 +288,7 @@ $app->get('/add_news', function (Request $request, Response $response) use ($app
 });
 //dashboard
 $app->get('/dashboard', function (Request $request, Response $response) use ($app){
-	
+	if(!$_SESSION['type'] or $_SESSION['type']==4){throw new \Slim\Exception\NotFoundException($request, $response);}
 	$con = new Dbhandler();
 	$ret = $con->display_news();
 	//return $response->withRedirect('./dashboard');
@@ -499,6 +499,16 @@ $app->get('/view-application/{app_id}', function(Request $request, Response $res
 	$this->logger->info(mysqli_num_rows($res));
 	$this->view->render($response, "view_app.php", ["rec" => $arr]);
 });
+
+$app->get('/remove-news/{news_id}', function(Request $request, Response $response) use ($app){
+	$news_id = $request->getAttribute('news_id');
+	if($_SESSION['type']!=4){throw new \Slim\Exception\NotFoundException($request, $response);}
+	$con = new Dbhandler();
+	$res = $con->remove_news($news_id);
+	return $response->withRedirect('../admin');
+	//$this->view->render($response, "view_app.php", ["rec" => $arr]);
+});
+
 
 /*
 $app->get('/tickets', function (Request $request, Response $response) {
