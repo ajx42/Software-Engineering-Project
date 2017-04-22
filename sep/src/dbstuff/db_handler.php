@@ -205,9 +205,13 @@ class Dbhandler{
 				$from = $details['period_from'];
 		$to = $details['period_to'];
 		$cur_date = date("Y-m-d");
-		$pec = "INSERT into Joining_Reports(Username,Nature,Period_From,Period_To,Report_From,Date) values('$myself', '$nature', '$from', '$to', '$report_from', '$cur_date')";
+		$app_id = $details['for_app_id'];
+		$pec = "INSERT into Joining_Reports(application_id,Username,Nature,Period_From,Period_To,Report_From,Date) values($app_id,'$myself', '$nature', '$from', '$to', '$report_from', '$cur_date')";
 		mysqli_query($this->conn, $pec);
-		
+		$mec = (int)mysqli_insert_id($this->conn);
+		$qec = "UPDATE application SET joining_report = $mec WHERE application_id = $app_id";
+		mysqli_query($this->conn, $qec);
+
 		if($details['nature'] == "HPL"){
 			$qry = "UPDATE leave_balance SET HPL = HPL - 2*$number_of_days WHERE username = '$myself'";
 		}
@@ -397,6 +401,26 @@ class Dbhandler{
 		$qry="SELECT * FROM Joining_Reports";
 		$result = mysqli_query($this->conn, $qry);
 		return $result;
+	}
+
+	public function get_pending_joining($user){
+		$qry="SELECT * FROM application WHERE username = '$user' and joining_report = 0 and nature != 'CL' and status = 'Approved'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+
+	public function validate_for_joining_report($app_id, $user){
+		$qry="SELECT * FROM application WHERE username = '$user' and application_id = '$app_id' and nature != 'CL' and status = 'Approved' and joining_report = 0";
+		$result = mysqli_query($this->conn, $qry);
+		$ok = 1;
+		//if(mysqli_num_rows($result) == 0) $ok = 0;
+		$rec = mysqli_fetch_assoc($result);
+		$to_date = new DateTime();
+		$from_date = new DateTime($rec['period_from']);
+
+		//$number_of_days = $to_date->diff($from_date)->format("%a")+1;;
+		//if($to_date < $from_date) $ok = 0;
+		return $ok;	
 	}
 }
 
