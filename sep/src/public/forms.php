@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 ?>
@@ -34,6 +35,33 @@ session_start();
             document.getElementById("encash").disabled='false';
         }
     }
+
+    function onLoad() {
+        
+        var today = new Date();
+        var day = today.getDate();
+      // Set month to string to add leading 0
+        var mon = new String(today.getMonth()+1); //January is 0!
+        var yr = today.getFullYear();
+      
+        if(mon.length < 2) { mon = "0" + mon; }
+      
+        var date = new String( yr + '-' + mon + '-' + day );
+        var input = document.getElementById("dateField");
+        input.removeAttribute('disabled');
+        input.setAttribute('value', date);
+        input.setAttribute('readonly', true);
+        input.setAttribute('min', date);
+        var input = document.getElementById("dateField1");
+        input.removeAttribute('disabled');
+        input.setAttribute('min', date);
+        var input = document.getElementById("dateField2");
+        input.removeAttribute('disabled');
+        input.setAttribute('min', date);    
+    }
+      window.onload = onLoad;
+    //document.addEventListener('load', onLoad, false);
+
 </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -110,15 +138,17 @@ session_start();
                                                 <option>CL</option>
                                                 <option>HPL</option>
                                                 <option>Vacation</option>
+                                                <option>EL </option>
+                                                <option>Special Casual Leave </option>
                                                 <option>Other</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label>Period of Leave</label>
                                             <br><label>From: </label>
-                                            <input type="date" id="some" class="form-control" name="period_from" required>
+                                            <input type="date" id="dateField1" class="form-control" name="period_from" required>
                                             <label>To: </label>
-                                            <input type="date" class="form-control" name="period_to" required>
+                                            <input type="date" id="dateField2" class="form-control" name="period_to" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Recommending Authority</label>
@@ -134,7 +164,10 @@ session_start();
                                                 });
                                             </script>
                                         </div>
-                                        
+                                        <div class="form-group">
+                                            <label>Approving Authority</label>
+                                            <input class="form-control" name="approving_auth" value = "<?php echo $appr?>" readonly required>
+                                        </div>
                                         
                                         
                                     
@@ -160,14 +193,16 @@ session_start();
                                             </div>
                                             <div class="form-group">
                                             <label>Want to encash EL?</label>
-                                            <select class="form-control" id="encash" name="LTC" disabled="false" value="No">
+                                            <select class="form-control" id="encash" name="EL" disabled="false" value="No">
                                                 <option>No</option>
                                                 <option>Yes</option>
                                             </select>
-                                            </div>                                            
+                                            </div>                  
+                                                                       
                                             <div class="form-group">
                                                 <label>Date</label>
-                                                <input type="date" class="form-control" name="cur_date" required>
+                                                <input id="dateField" type="date" class="form-control" name="cur_date" min="2014-01-01" disabled required />
+                                               
                                             </div>
                                             <div class="form-group">
                                                 <label>Contact No. during Leave</label>
