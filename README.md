@@ -22,7 +22,7 @@
 4. Enter your MySQL username and password in the database configuration file. It's named __config.php__ and can be found at sep-2/src/db_stuff.
 
 ###### Part - 3: Configuring the mailer
-5. Edit the file mail configuration file located at sep-2/src/\_mail\_\_. It's also named __config.php__. Fill in your email account details from where you wish to send notifications from.
+5. Edit the file mail configuration file located at sep-2/src/\_mail\_\_. It's also named __config.php__. Fill in your email account details where you wish to send notifications from.
 
 ###### Part - 4: Testing the setup
 6. There are a few dummy accounts already created to get you started. 
