@@ -274,13 +274,19 @@ $app->get('/fill-joining-report/{app_id}', function (Request $request, Response 
 	$arr['name'] = $_SESSION['myname'];
 	$res = $con->fetchapp($app_id);
 	$rec = mysqli_fetch_assoc($res);
-	$this->view->render($response, "joining_report.php", ["rec" => $rec]);
+	$dep = $con->get_all_deps();
+
+	$this->view->render($response, "joining_report.php", ["rec" => $rec, "dep" => $dep]);
 });
 
 
 //add new account holder- form
 $app->get('/add_new_account_holder', function (Request $request, Response $response) use ($app){
-	$this->view->render($response, "add_new_account.php");
+	if($_SESSION['type']!=4) throw new \Slim\Exception\NotFoundException($request, $response); 
+	$con = new Dbhandler();
+	$dep = $con->get_all_deps();
+	$apr = $con->get_all_approvers();
+	$this->view->render($response, "add_new_account.php", ["dep" => $dep, "apr" => $apr]);
 });
 //add_news
 $app->get('/add_news', function (Request $request, Response $response) use ($app){
@@ -304,6 +310,7 @@ $app->get('/view_all_users', function(Request $request, Response $response) use 
 });
 */
 //submit new news
+/*
 $app->post('/submit_add_new_member', function (Request $request, Response $response) use ($app){
 	$body = $request->getParams();
 	$this->logger->info("new member added successfully : $user");
@@ -313,6 +320,23 @@ $app->post('/submit_add_new_member', function (Request $request, Response $respo
 	//$this->logger->info($con->joining($body));
 	return $response->withRedirect('./admin');
 });
+*/
+
+$app->post('/submit_add_new_member', function (Request $request, Response $response) use ($app){
+	$body = $request->getParams();
+	$this->logger->info("new member added successfully : $user");
+	$con = new Dbhandler();
+	if($body['type'] == "General User") $body['type'] = 1;
+	else if($body['type'] == "Recommending Authority") $body['type'] = 2;
+	else if($body['type'] == "Approving Authority") $body['type'] = 3;
+	else if($body['type'] == "Administrator") $body['type'] = 4;
+	$status = $con->insert_new_member($body);
+	$this->logger->info("$status");
+	//$this->mailer->join_notify($status);	
+	//$this->logger->info($con->joining($body));
+	return $response->withRedirect('./admin');
+});
+
 //submit_news
 $app->post('/submit_news', function (Request $request, Response $response) use ($app){
 	$body = $request->getParams();
@@ -456,7 +480,8 @@ $app->get('/user_details/{username}', function(Request $request, Response $respo
 	$rec = $con->get_user_details($username);
 	if(mysqli_num_rows($rec)==0){throw new \Slim\Exception\NotFoundException($request, $response);}
 	$bal = $con->getbalance($username);
-	$this->view->render($response, "view_user_info.php", ["rec" => $rec, "balance" => $bal]);
+	$dep = $con->get_all_deps();
+	$this->view->render($response, "view_user_info.php", ["rec" => $rec, "balance" => $bal, "dep" => $dep]);
 });
 
 
@@ -468,6 +493,7 @@ $app->post('/user_details/{username}/updatebasics', function(Request $request, R
 	$con->change_name($body['name'], $username);
 	$con->change_type($body['type'], $username);
 	$con->change_notify($body['email_notify'], $username);
+	$con->change_dep($body['department_select'], $username);
 	return $response->withRedirect('../'.$username);
 });
 
@@ -509,6 +535,31 @@ $app->get('/remove-news/{news_id}', function(Request $request, Response $respons
 	//$this->view->render($response, "view_app.php", ["rec" => $arr]);
 });
 
+$app->get('/departments', function(Request $request, Response $response) use ($app){
+	if($_SESSION['type']!=4){throw new \Slim\Exception\NotFoundException($request, $response);}
+	$con = new Dbhandler();
+	$res = $con->get_all_deps();
+	//return $response->withRedirect('../admin');
+	$this->view->render($response, "all_deps.php", ["res" => $res]);
+});
+
+$app->post('/add-department', function(Request $request, Response $response) use ($app){
+if($_SESSION['type']!=4){throw new \Slim\Exception\NotFoundException($request, $response);}
+	$con = new Dbhandler();
+	$body = $request->getParams();
+	if($body['depname'])$con->add_new_department($body);
+	return $response->withRedirect('./departments');
+});
+
+/*$app->get('/remove-department/{depname}', function(Request $request, Response $response) use ($app){
+if($_SESSION['type']!=4){throw new \Slim\Exception\NotFoundException($request, $response);}
+	$con = new Dbhandler();
+	$dep = $request->getAttribute('depname');
+	if($body['depname'])$con->delete_department($dep);
+
+	return $response->withRedirect('../departments');
+});
+*/
 
 /*
 $app->get('/tickets', function (Request $request, Response $response) {
@@ -526,7 +577,7 @@ Crack
 */
 
 
-
+/*
 $app->get('/yo', function(Request $request, Response $response) use($app){
 	$this->mailer->notify_rec('Aditya', 'cse150001001@iiti.ac.in');
 });
@@ -538,6 +589,7 @@ $app->get('/fun', function(Request $request, Response $response) use($app){
 
 	return $response->withRedirect('https://www.youtube.com/watch?v=FM7MFYoylVs');
 });
+*/
 
 	
 $app->run();
