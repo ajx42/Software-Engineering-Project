@@ -18,7 +18,7 @@
 2. Set Document Root of your server to be sep-2/src/public/
 
 ###### Part - 2: Configuring the database
-3. Import fulldb.sql in a MySQL database. Name it LMS.
+3. Import __fulldb.sql__ found at sep-2/src/ in a MySQL database. Name it LMS.
 4. Enter your MySQL username and password in the database configuration file. It's named __config.php__ and can be found at sep-2/src/db_stuff.
 
 ###### Part - 3: Configuring the mailer
