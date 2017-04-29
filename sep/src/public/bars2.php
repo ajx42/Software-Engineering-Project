@@ -42,7 +42,7 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
+                        <!--li class="sidebar-search">
                             <div class="input-group custom-search-form">
                                 <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
@@ -51,7 +51,15 @@
                                 </button>
                             </span>
                             </div>
-                            <!-- /input-group -->
+                            
+                        </li-->
+                        <br>
+                        <br>
+                        <li>
+                            <center><img src="iiti_logo.png" alt="IIT Indore" style="width:100px;height:100px;"></center>
+                        
+                        <br>
+                        <br>
                         </li>
                          <li>
                             <a href="./admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
@@ -69,12 +77,72 @@
                           <a href="./settings"><i class="fa fa-wrench fa-fw"></i> Account Settings</a>
                         </li>
                         <li>
-                          <a href="./add_new_account_holder"><i class="fa fa-wrench fa-fw"></i> Add new acount holder</a>
+                          <a href="./add_new_account_holder"><i class="fa fa-wrench fa-fw"></i> Create New Account</a>
                         </li>
                          <li>
                             <a href="./view-all-joining"><i class="fa fa-edit fa-fw"></i> All Joining Reports</a>
                         </li>
+                        <li>
+                            <a href="./departments"><i class="fa fa-edit fa-fw"></i> Departments</a>
+                        </li>
+                        <!--li>
+                            <a href="./balance"><i class="fa fa-dashboard fa-fw"></i> Leave Balance</a>
+                        </li>
+                         <li>
+                            <a href="./my_leaves"><i class="fa fa-dashboard fa-fw"></i> Leave History</a>
+                        </li>
+                        <li>
+                            <a href="./settings"><i class="fa fa-wrench fa-fw"></i> Account Settings</a>
+                        </li-->
+
+
+                        <!--li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>Charts<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="flot.html">Flot Charts</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">Morris.js Charts</a>
+                                </li>
+                            </ul>
+                            
+                        </li-->
+                        
+                        
+                        
+                        
                        
+                        <!--li>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="#">Second Level Item</a>
+                                </li>
+                                <li>
+                                    <a href="#">Second Level Item</a>
+                                </li>
+                                <li>
+                                    <a href="#">Third Level <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                    </ul>
+                                   
+                                </li>
+                            </ul>
+                           
+                        </li-->
                         
                     </ul>
                 </div>
