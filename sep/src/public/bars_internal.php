@@ -17,9 +17,10 @@
             <!-- /.navbar-header -->
             <!-- template hai sab -->
             <ul class="nav navbar-top-links navbar-right">
-              
+               
                 <li class="dropdown">
-                   
+                    
+                 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -42,19 +43,17 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                            </div>
-                            <!-- /input-group -->
+                       
+                        <br>
+                        <br>
+                        <li>
+                            <center><img src="../iiti_logo.png" alt="IIT Indore" style="width:100px;height:100px;"></center>
+                        
+                        <br>
+                        <br>
                         </li>
                         <li>
-                            <a href="../user.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="../dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="../apply"><i class="fa fa-edit fa-fw"></i> Apply for Leave</a>
@@ -73,7 +72,7 @@
                         </li>
 
 
-                       
+                        
                         
                         
                         <?php
@@ -91,7 +90,7 @@
                         ?>
                         
                        
-                       
+                        
                         
                     </ul>
                 </div>
