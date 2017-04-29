@@ -103,7 +103,7 @@ class Dbhandler{
 		$username=$res['username'];
 		$name=$res['name'];
 		$type=$res['type'];
-
+		$pass = $res['password'];
 		$department=$res['department'];
 		$approving=$res['approving'];
 		$cl=$res['cl'];
@@ -111,31 +111,37 @@ class Dbhandler{
 		$vacation=$res['vacation'];
 		$el=$res['el'];	
 		$check=1;
-		$qry = "INSERT into accounts(username,name,password,type,department,notifications,approving_authority) values('$username','$name','$username','$type','$department','$check','$approving' )";
+		$q1 = "SELECT * from accounts where username = '$username'";
+		if(mysqli_num_rows(mysqli_query($this->conn, $q1))==0) return 0;
+		$t1 = -1; $t2 = -1; $t3 = -1;
+		$qry = "INSERT into accounts(username,name,password,type,department,notifications,approving_authority) values('$username','$name','$pass','$type','$department','$check','$approving' )";
 		if($result = mysqli_query($this->conn, $qry)){
-			$check=2;
+			$t1 = 1;
 		}
 		else{
-			echo mysqli_error($this->conn);
-			$check=-1;
+			//echo mysqli_error($this->conn);
+			$t1 = 0;
 		}
 
 		if($type == 3){
+
 			$qry = "INSERT INTO forward_approving_auth(username, forwarded_to) values('$username', '$username')";
-			mysqli_query($this->conn, $qry);
+			if(mysqli_query($this->conn, $qry)) $t2 = 1;
+			else $t2 = 0;
 		}
 
 
 		$qry = "INSERT into leave_balance(username,CL,HPL,Vacation,EL) values('$username',
 		                    '$cl','$hpl','$vacation','$el' )";        
 		if($result = mysqli_query($this->conn, $qry)){
-			return $check*1;
+			$t3 = 1;
 		}
 		else{
-			echo mysqli_error($this->conn);
-			return $check*5;
+			//echo mysqli_error($this->conn);
+			$t3 = 0;
 		}
-
+		if($t1!=0 && $t2!=0 && $t3!=0) return 1;
+		else return 0;
 	}
 
 	public function getname($userid){
@@ -324,7 +330,7 @@ class Dbhandler{
 
 	public function get_recommenders($user){
 		$mydep = $this->getmydep($user);
-		$qry = "SELECT username, name from accounts where department = '$mydep' and username != '$user'";
+		$qry = "SELECT username, name from accounts where type = 2 and  username != '$user'";
 		$result = mysqli_query($this->conn, $qry);
 		return $result;
 	}
