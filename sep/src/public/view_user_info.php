@@ -121,7 +121,26 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label>Email Notifications</label>
+                                            <label>Department</label>
+                                            <select class="form-control" id="presuf3" name="department_select" >
+                                                <?php
+                                                    while($depr = mysqli_fetch_assoc($dep)){
+                                                ?>
+                                                <option <?php if($res['department'] == $depr['department']) echo 'selected'?>>
+                                                <?php echo $depr['department'];?>
+                                                </option>
+                                                <?php
+                                                    } 
+                                                ?>
+                                            </select>
+                                        </div>
+                                </div>
+                                
+                            </div>
+                             <div class="row">
+                                <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Notifications</label>
                                             <select class="form-control" id="presuf3" name="email_notify" >
                                                 <option <?php if($res['notifications'] == 1)  echo 'selected'  ?>>Enable </option>
                                                 <option <?php if($res['notifications'] == 0)  echo 'selected'  ?>>Disable</option>
