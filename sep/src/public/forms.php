@@ -7,20 +7,27 @@ session_start();
 <script>
     function disabling()
     {
-        if(document.getElementById("type_of_leave").value==="CL"){
+        if(document.getElementById("type_of_leave").value==="Special Casual Leave"){
+            document.getElementById("approvingAuth").value = "director@iiti.ac.in";
+            //document.getElementById("approvingAuth").removeAttribute('readonly');
+        }
+        else if(document.getElementById("type_of_leave").value==="CL"){
             document.getElementById("presuf1").value = 0;
             document.getElementById("presuf2").value = 0;
             document.getElementById("presuf3").value = "No";
             document.getElementById("presuf1").disabled='false';
             document.getElementById("presuf2").disabled='false';
             document.getElementById("presuf3").disabled='false';
+            //document.getElementById("approving_auth").removeAttribute('readonly');
+            //document.getElementById('designation').value = "director@iiti.ac.in";
+            //document.getElementById("approving_auth").value = "director@iiti.ac.in";
             
         }
         else{
-            
             document.getElementById("presuf1").removeAttribute('disabled');
             document.getElementById("presuf2").removeAttribute('disabled');
             document.getElementById("presuf3").removeAttribute('disabled');
+            document.getElementById("approvingAuth").value = "<?php echo $appr?>";
         }
         
     }
@@ -35,6 +42,7 @@ session_start();
             document.getElementById("encash").disabled='false';
         }
     }
+    
 
     function onLoad() {
         
@@ -123,7 +131,7 @@ session_start();
 
                                         <div class="form-group">
                                             <label>Designation</label>
-                                            <input class="form-control" name="designation" required>
+                                            <input class="form-control" id="designation" name="designation"  required>
                                         </div>
                                         <div class="form-group">
                                             <label>Department</label>
@@ -152,7 +160,7 @@ session_start();
                                         </div>
                                         <div class="form-group">
                                             <label>Recommending Authority</label>
-                                            <select class="combobox input-large form-control" name = "recommending_auth" required>
+                                            <select class="combobox input-large form-control" name = "recommending_auth">
                                                 <option></option>
                                                 <?php while($ret = mysqli_fetch_assoc($rec)){ ?> 
                                                     <option value = "<?php echo $ret['username']; ?>"><?php echo $ret['name']; ?> </option>
@@ -166,7 +174,7 @@ session_start();
                                         </div>
                                         <div class="form-group">
                                             <label>Approving Authority</label>
-                                            <input class="form-control" name="approving_auth" value = "<?php echo $appr?>" readonly required>
+                                            <input class="form-control" id = "approvingAuth" name="approving_auth"  readonly value = "<?php echo $appr?>"  required>
                                         </div>
                                         
                                         
@@ -212,8 +220,8 @@ session_start();
                                                 <label>Address during Leave</label>
                                                 <textarea class="form-control" cols="10" rows="6" name="address"></textarea>
                                             </div>
-                                       <button type="submit" class="btn btn-default">Submit Button</button>
-                                        <button type="reset" class="btn btn-default">Reset Button</button>
+                                       <button type="submit" class="btn btn-default">Submit</button>
+                                        <button type="reset" class="btn btn-default">Reset</button>
                                     </form>
                                     
                                 </div>
