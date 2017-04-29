@@ -1,7 +1,10 @@
 <?php
 session_start();
 
+//require '../db_stuff/db_handler.php';
+
 require_once "../vendor/autoload.php";
+
 
 class EmailFormat{
 	public $subject, $body, $altbody;
@@ -28,10 +31,10 @@ class MailHandler{
 		$this->mail->Body = $content->body;
 		$this->mail->AltBody = $content->altbody;
 		if(!$this->mail->send()) {
-    			return 0;
+    		return 0;
 		} 
 		else {
-    			return 1;
+    		return 1;
 		}
 	}
 	public function notify_rec($to_name, $to_add){
@@ -46,6 +49,7 @@ class MailHandler{
 		$email->body = "<b>Hi $to_name </b> <br> You have a new approval request. Please log into IITI LPS to take action. <br> <i>Thanks</i>";
 		return $this->Send($email, $to_name, $to_add);
 	}
+
 	public function join_notify($status){
 		$email = new EmailFormat();
 		$to_name = $_SESSION['myname'];
@@ -61,7 +65,14 @@ class MailHandler{
 		return $this->Send($email, $to_name, $to_add);
 
 	}
-	
+
+	public function account_created_notification($to_add, $to_name, $pass){
+		$email = new EmailFormat();
+		$email->subject = "Accounted Created";
+		$email->body = "<b>Hi $to_name </b> <br> We are pleased to inform you that your account for IITI LPS has been created. Your details are: <br> <b> username: </b> $to_add <br> <b> password: </b> $pass <br> Please log in and reset your password. <br> <i> Thanking You </i>";
+		return $this->Send($email, $to_name, $to_add);
+	}
+
 	// checks if email notifications are enabled for the user
 	private function check_email_notifications($user){
 		$con = new Dbhandler();
@@ -72,6 +83,7 @@ class MailHandler{
 			return 0;
 		}
 	}
+
 }
 
 ?>
