@@ -92,16 +92,15 @@ session_start();
                                         <div class="form-group">
                                             <label>Department</label>
                                             <select class="form-control" name="department" required>
-                                                <option>CSE</option>
-                                                <option>EE</option>
-                                                <option>ME</option>
-                                                <option>MEMS</option>
-                                                <option>CE</option>
-                                                <option>BSBE</option>
-                                                <option>PHY</option>
-                                                <option>CHE</option>
-                                                <option>MA</option>
-                                                <option>Other</option>
+                                                <?php
+                                                    while($depr = mysqli_fetch_assoc($dep)){
+                                                ?>
+                                                <option <?php if($rec['department'] == $depr['department']) echo 'selected'?>>
+                                                <?php echo $depr['department'];?>
+                                                </option>
+                                                <?php
+                                                    } 
+                                                ?>
                                             </select>
                                         </div>
                                         
