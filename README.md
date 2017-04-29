@@ -14,15 +14,15 @@
 #### Installation
 
 ###### Part - 1: Basics
-1. Download the repository and install all the above dependencies for the folder sep-2.
-2. Set Document Root of your server to be sep-2/src/public/
+1. Download the repository and install all the above dependencies for the folder __sep__.
+2. Set Document Root of your server to be __sep/src/public/__.
 
 ###### Part - 2: Configuring the database
-3. Import __fulldb.sql__ found at sep-2/src/ in a MySQL database. Name it LMS.
-4. Enter your MySQL username and password in the database configuration file. It's named __config.php__ and can be found at sep-2/src/db_stuff.
+3. Import __fulldb.sql__ found at sep/src/ in a MySQL database. Name it LMS.
+4. Enter your MySQL username and password in the database configuration file. It's named __config.php__ and can be found at sep/src/db_stuff.
 
 ###### Part - 3: Configuring the mailer
-5. Edit the file mail configuration file located at sep-2/src/\_mail\_\_. It's also named __config.php__. Fill in your email account details where you wish to send notifications from.
+5. Edit the file mail configuration file located at sep/src/\_mail\_\_. It's also named __config.php__. Fill in your email account details where you wish to send notifications from.
 
 ###### Part - 4: Testing the setup
 6. There are a few dummy accounts already created to get you started. 
