@@ -25,8 +25,8 @@
 5. Edit the file mail configuration file located at sep-2/src/\_mail\_\_. It's also named __config.php__. Fill in your email account details from where you wish to send notifications from.
 
 ###### Part - 4: Testing the setup
-6. There are a few dummy already created to get you started. 
-    1. __ADMIN ACCOUNT__ => __username__ : admin@iiti.ac.in, __password__ : admin
-    2. __SAMPLE RECOMMENDING AUTHORITY ACCOUNT__ => __username__ : recommender@iiti.ac.in, __password__: recommender
-    3. __SAMPLE APPROVING AUTHORITY ACCOUNT__ => __username__ : approver@iiti.ac.in, __password__: approver
-    4. __SAMPLE GENERAL USER ACCOUNT__ => __username__ : user@iiti.ac.in, __password__: testuser
+6. There are a few dummy accounts already created to get you started. 
+    1. __ADMIN ACCOUNT__ => __username__ : admin@lps.iiti.ac.in, __password__ : admin
+    2. __SAMPLE RECOMMENDING AUTHORITY ACCOUNT__ => __username__ : recommender@lps.iiti.ac.in, __password__: recommender
+    3. __SAMPLE APPROVING AUTHORITY ACCOUNT__ => __username__ : approver@lps.iiti.ac.in, __password__: approver
+    4. __SAMPLE GENERAL USER ACCOUNT__ => __username__ : user@lps.iiti.ac.in, __password__: testuser
