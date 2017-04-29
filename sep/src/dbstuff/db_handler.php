@@ -82,7 +82,7 @@ class Dbhandler{
 		
 	}
 	//insert new member
-	public function insert_new_member($res){
+	/*public function insert_new_member($res){
 		$username=$res['username'];
 		$cl=$res['cl'];
 		$hpl=$res['hpl'];
@@ -98,6 +98,46 @@ class Dbhandler{
 			return 0;
 		}
 	}
+*/
+	public function insert_new_member($res){
+		$username=$res['username'];
+		$name=$res['name'];
+		$type=$res['type'];
+
+		$department=$res['department'];
+		$approving=$res['approving'];
+		$cl=$res['cl'];
+		$hpl=$res['hpl'];
+		$vacation=$res['vacation'];
+		$el=$res['el'];	
+		$check=1;
+		$qry = "INSERT into accounts(username,name,password,type,department,notifications,approving_authority) values('$username','$name','$username','$type','$department','$check','$approving' )";
+		if($result = mysqli_query($this->conn, $qry)){
+			$check=2;
+		}
+		else{
+			echo mysqli_error($this->conn);
+			$check=-1;
+		}
+
+		if($type == 3){
+			$qry = "INSERT INTO forward_approving_auth(username, forwarded_to) values('$username', '$username')";
+			mysqli_query($this->conn, $qry);
+		}
+
+
+		$qry = "INSERT into leave_balance(username,CL,HPL,Vacation,EL) values('$username',
+		                    '$cl','$hpl','$vacation','$el' )";        
+		if($result = mysqli_query($this->conn, $qry)){
+			return $check*1;
+		}
+		else{
+			echo mysqli_error($this->conn);
+			return $check*5;
+		}
+
+	}
+
 	public function getname($userid){
 		$qry = "SELECT name from accounts where username = '$userid'";
 		if($result = mysqli_query($this->conn, $qry)){
@@ -425,6 +465,31 @@ class Dbhandler{
 	public function remove_news($news_id){
 		$qry = "DELETE FROM add_news WHERE id= $news_id";
 		mysqli_query($this->conn, $qry);
+	}
+
+	public function get_all_deps(){
+		$qry = "SELECT * FROM departments";
+		return $result = mysqli_query($this->conn, $qry);	
+	}
+
+	public function change_dep($newdep, $username){
+		$qry = "UPDATE accounts SET department = '$newdep' WHERE username = '$username'";
+		$result = mysqli_query($this->conn, $qry);
+		return $result;
+	}
+
+	public function get_all_approvers(){
+		$qry = "SELECT * FROM accounts WHERE type = 3";
+		return $result = mysqli_query($this->conn, $qry);
+	}
+	public function add_new_department($body){
+		$dep = $body['depname'];
+		$qry = "INSERT INTO departments(department) VALUES('$dep')";
+		return $result = mysqli_query($this->conn, $qry);	
+	}
+	public function delete_department($dep){
+		$qry = "DELETE FROM departments WHERE department = '$dep'";
+		return $result = mysqli_query($this->conn, $qry);	
 	}
 }
 
