@@ -330,7 +330,9 @@ $app->post('/submit_add_new_member', function (Request $request, Response $respo
 	else if($body['type'] == "Recommending Authority") $body['type'] = 2;
 	else if($body['type'] == "Approving Authority") $body['type'] = 3;
 	else if($body['type'] == "Administrator") $body['type'] = 4;
+	$body['password'] = $pwd = bin2hex(openssl_random_pseudo_bytes(4));
 	$status = $con->insert_new_member($body);
+	if($status) $this->mailer->account_created_notification($body['username'], $body['name'], $body['password']);
 	$this->logger->info("$status");
 	//$this->mailer->join_notify($status);	
 	//$this->logger->info($con->joining($body));
@@ -577,7 +579,7 @@ Crack
 */
 
 
-/*
+
 $app->get('/yo', function(Request $request, Response $response) use($app){
 	$this->mailer->notify_rec('Aditya', 'cse150001001@iiti.ac.in');
 });
@@ -589,7 +591,7 @@ $app->get('/fun', function(Request $request, Response $response) use($app){
 
 	return $response->withRedirect('https://www.youtube.com/watch?v=FM7MFYoylVs');
 });
-*/
+
 
 	
 $app->run();
