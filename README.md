@@ -15,10 +15,10 @@
 
 ###### Part - 1: Basics
 1. Download the repository and install all the above dependencies for the folder __sep__.
-2. Set Document Root of your server to be __sep/src/public/__.
+2. Set Document Root of your server to be `sep/src/public/`.
 
 ###### Part - 2: Configuring the database
-3. Import __fulldb.sql__ found at sep/src/ in a MySQL database. Name it LMS.
+3. Import __fulldb.sql__ found at `sep/src/` in a MySQL database. Name it LMS.
 4. Enter your MySQL username and password in the database configuration file. It's named __config.php__ and can be found at sep/src/db_stuff.
 
 ###### Part - 3: Configuring the mailer
